@@ -3,6 +3,7 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
     secrets = require('./config/secrets'),
+    mysql = require("mysql"),
     bodyParser = require('body-parser');
 
 // Create our Express application
@@ -13,6 +14,17 @@ var port = process.env.PORT || 4000;
 
 // Connect to a MongoDB
 mongoose.connect(secrets.mongo_connection,  { useNewUrlParser: true });
+
+
+// Connec to SQL
+var db = mysql.createConnection(secrets.sql_connection);
+
+
+db.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+});
+
 
 // Allow CORS so that backend and frontend could be put on different servers
 var allowCrossDomain = function (req, res, next) {
@@ -30,7 +42,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // Use routes as a module (see index.js)
-require('./routes')(app, router);
+require('./routes')(app, router, db);
 
 // Start the server
 app.listen(port);

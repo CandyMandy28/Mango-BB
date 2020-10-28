@@ -3,6 +3,6 @@
  */
 module.exports = {
     token : "secret-starter-mern",
-    mongo_connection : "mongodb+srv://admin:abcd@1234@cluster0-gyeyh.mongodb.net/test?retryWrites=true&w=majority"
-    //example: mongo_connection : "mongodb+srv://[type-yours]:[type-yours]@[type-yours-web-provided].mongodb.net/test?retryWrites=true"
+    mongo_connection : "mongodb+srv://admin:abcd@1234@cluster0.agp9a.mongodb.net/MangoDB?retryWrites=true&w=majority",
+    sql_connection : "mysql://MangoBB-3135376c16:mbb049jagd@mysql.stackcp.com:55948/MangoBB-3135376c16?debug=true",
 };
