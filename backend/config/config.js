@@ -1,38 +1,43 @@
 const sql = require('mssql');
+const secrets = require('./secrets');
 require('dotenv').config();
 
-const config = {
-  user: secret.env.SERVER_USER,
-  password: secret.env.SERVER_PASSWORD,
-  server: secret.env.SERVER,
-  database: 'vmaint'
+module.exports = {
+  token : "secret-starter-mern",
+  sql_connection: secrets.env.SQL_SERVER,
 };
 
-let aList;
+// const config = {
+//   user: secret.env.SERVER_USER,
+//   password: secret.env.SERVER_PASSWORD,
+//   server: secret.env.SERVER
+// };
 
-async function getList() {
-  try {
-    let pool = await sql.connect(config);
-    let result = await pool
-      .request()
-      .query('SELECT item1, item2, item3, item4 FROM items');
+// let aList;
 
-    aList = result.recordset;
-    console.dir(aList);
-    pool.close();
-  } catch (err) {
-    console.log(err);
-  }
-}
+// async function getList() {
+//   try {
+//     let pool = await sql.connect(config);
+//     let result = await pool
+//       .request()
+//       .query('SELECT item1, item2, item3, item4 FROM items');
 
-async function vList() {
-   if (!aList) {
-      await getList();
-   }
-   if (!aList) {
-      throw new Error('Could not get items');
-   }
-   return aList;
-}
+//     aList = result.recordset;
+//     console.dir(aList);
+//     pool.close();
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
-module.exports = vList;
+// async function vList() {
+//    if (!aList) {
+//       await getList();
+//    }
+//    if (!aList) {
+//       throw new Error('Could not get items');
+//    }
+//    return aList;
+// }
+
+// module.exports = vList;
