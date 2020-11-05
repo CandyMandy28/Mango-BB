@@ -13,20 +13,10 @@ module.exports = function(router, db) {
         let sql_results = ""
         let results = db.query('SELECT * FROM `Classes`', function (err, result, fields) {
             if (err) throw err;
-             console.log(result[0]);
+            console.log(result[0]);
+            res.send(result);
         });
-        console.log(results)
-
-        // var request = new sql.Request();
-        // let results = request.query('SELECT * FROM Classes', function(err, records, fields){
-        //     if (err) console.log(err);
-        //     res.send(record);
-        // });
-
-        // console.log(results);
-        // var db = sql.connect(secrets.sql_connection, function(err){
-        //     if (err) console.log(err);
-        // });
+        console.log(results);
     });
 
     return router;
