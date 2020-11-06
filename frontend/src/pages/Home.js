@@ -1,15 +1,25 @@
 import React from "react";
-import { Grid, Reveal, Image, Checkbox, Menu, Header } from "semantic-ui-react";
+import { Grid, Card, Icon, Divider, Menu, Header } from "semantic-ui-react";
 import Sidebar from "./components/Sidebar";
-import axios from 'axios';
+import axios from "axios";
 
 export default class Home extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      
-    }
+      classes: ["sdfa", "sdfa"],
+    };
+  }
+
+  componentDidMount() {
+    this.fetchClasses();
+  }
+
+  fetchClasses() {
+    let url = "http://localhost:4000/api/enrollments/b2";
+    axios.get(url).then((res) => {
+      this.setState({ classes: res.data.data });
+    });
   }
 
   render() {
@@ -20,67 +30,32 @@ export default class Home extends React.Component {
         </div>
 
         <div className={"mainCont"}>
-          <Header as='h1'>Course Page</Header>
-          <div class="ui clearing divider"></div>    
-          <div class="ui three column doubling stackable grid container">
-            <div class="row">
-              <div class="column">
-                <p></p>
-              </div>
-              <div class="column">
-                <p></p>
-              </div>
-              <div class="column">
-                <button class="ui labeled icon right floated button">
-                  <i class="add icon"></i>
-                  Add Course
-                </button>
-              </div>
-            </div>
-            <div class="row">
-              <div class="column">
-                <div className={"container"}>
-                  <div class="ui raised very padded text segment"> 
-                    <h1 class="ui header">CS 411</h1>
-                    <h3 class="ui header">Rank: </h3>
-                    <h3 class="ui header">Attendance: </h3>
-                  </div>
-                </div>
-              </div>
-              <div class="column">
-                <div className={"container"}>
-                  <div class="ui raised very padded text segment"> 
-                    <h1 class="ui header">CS 411</h1>
-                    <h3 class="ui header">Rank: </h3>
-                    <h3 class="ui header">Attendance: </h3>
-                  </div>
-                </div>
-              </div>
-              <div class="column">
-                <div className={"container"}>
-                  <div class="ui raised very padded text segment">
-                    <h1 class="ui header">CS 411</h1>
-                    <h3 class="ui header">Rank: </h3>
-                    <h3 class="ui header">Attendance: </h3>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="column">
-                <div className={"container"}>
-                  <div class="ui raised very padded text segment">
-                    <h1 class="ui header">CS 411</h1>
-                    <h3 class="ui header">Rank: </h3>
-                    <h3 class="ui header">Attendance: </h3>
-                  </div>
-                </div>
-              </div>
+          <Header as="h1">Course Page</Header>
+          <Divider />
+          <br></br>
+          <div className={"container"}>
+            <div className={"collectionCont"}>
+              <Grid columns={3}>
+                <Grid.Row>
+                  {this.state.classes.map((class_info) => (
+                    <Grid.Column key={class_info.crn}>
+                        <Card key={class_info.crn}>
+                          <Card.Content header={class_info.className} />
+                          <Card.Content>
+                            <p>Rank: {class_info.score}</p>
+                            <p>Attendance: {(class_info.attendanceTotal == 0) ? 0 : Math.round((class_info.attendancePresent / class_info.attendanceTotal)*100) } %</p>
+                          </Card.Content>
+                          <Card.Content extra>
+                            <Icon name='user' /> {class_info.teacherID}
+                          </Card.Content>
+                        </Card>
+                    </Grid.Column>
+                  ))}
+                </Grid.Row>
+              </Grid>
             </div>
           </div>
-          
         </div>
-
       </div>
     );
   }
