@@ -15,6 +15,7 @@ export default class Profile extends React.Component {
   render() {
     return (
       <div className={"pageCont"}>
+
         <div className={"sidebarCont"}>
           <Sidebar></Sidebar>
         </div>
@@ -22,8 +23,11 @@ export default class Profile extends React.Component {
           <Header as='h1'>Profile</Header>
           <div className={"container"}>
 
+            
+            
           </div>
         </div>
+
       </div>
     );
   }
