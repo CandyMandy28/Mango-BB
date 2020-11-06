@@ -1,12 +1,9 @@
-var secrets = require('../config/secrets');
-
 module.exports = function (router, db) {
 
     var homeRoute = router.route('/');
 
     homeRoute.get(function (req, res) {
-        var connectionString = secrets.token;
-        res.json({ message: 'My connection string is ' + connectionString });
+        res.json({ message: 'Please use a valid route'});
     });
 
     return router;
