@@ -115,6 +115,7 @@ body {
     width: 80%;
     align-self: center;
     margin-bottom: 50px;
+    display: flex;
 
     .meta {
         margin: .5em 0 .5em !important;
@@ -133,5 +134,13 @@ body {
 .message {
     width: 80%;
     align-self: center;
+}
+
+.searchhistorysize {
+    width: 60%;
+}
+
+.classhissize {
+    width: 40%;
 }
 

@@ -1,5 +1,8 @@
 import React from "react";
 import { Input, Button, Table, Icon, Header, Message } from 'semantic-ui-react';
+//changed
+import { Grid, Card, Divider, Menu } from "semantic-ui-react";
+//
 import Sidebar from "./components/Sidebar";
 import axios from 'axios';
 
@@ -67,18 +70,48 @@ export default class Search extends React.Component {
               success
               header='Course has been added succesfully'
             /> : "" }
-            <div className={'searchCont'}>
-              {this.state.classes.length >= 1 ? <Table>
-                <Table.Body>
+            <div className={'searchCont'} >
+              
+              <div className={'searchhistorysize'}>
+          
+                {this.state.classes.length >= 1 ? <Table>
+                  <Table.Body>
+                    {this.state.classes.map((class_info) => (
+                      <Table.Row key={class_info.crn}>
+                          <Table.Cell>{class_info.className}</Table.Cell>
+                          <Table.Cell>{class_info.teacherID}</Table.Cell>
+                          <Table.Cell collapsing><Button primary onClick={() => this.handleAddCourse(class_info.crn)}> <Icon name='book' /> Add Course </Button></Table.Cell>
+                     </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table> : ""}
+              </div>
+              
+              <div className={'classhissize'}>
+                  <Grid columns={1}>
+                  <Grid.Row>
                   {this.state.classes.map((class_info) => (
-                     <Table.Row key={class_info.crn}>
-                        <Table.Cell>{class_info.className}</Table.Cell>
-                        <Table.Cell>{class_info.teacherID}</Table.Cell>
-                        <Table.Cell collapsing><Button primary onClick={() => this.handleAddCourse(class_info.crn)}> <Icon name='book' /> Add Course </Button></Table.Cell>
-                    </Table.Row>
+                    <Grid.Column key={class_info.crn}>
+                        <Card key={class_info.crn}>
+                          <Card.Content header={class_info.className} />
+                          <Button basic color='red' primary onClick={() => this.handleRemoveCourse(class_info.crn)}><Icon name='minus' /></Button>
+                          <Card.Content>
+                            <p>Rank: {class_info.score}</p>
+                            <p>Attendance: {(class_info.attendanceTotal == 0) ? 0 : Math.round((class_info.attendancePresent / class_info.attendanceTotal)*100) } %</p>
+                            {/* <button class="ui primary right floated button" onClick={() => class_info.attendancePresent + 1}>Attendance</button> */}
+                          </Card.Content>
+                          <Card.Content extra>
+                            <div className="cardInfo">
+                              <Icon name='user' /> {class_info.teacherID}
+                              <button class="ui primary right floated button" onClick={() => this.handleCountAttendance(class_info.crn, class_info.attendancePresent, class_info.attendanceTotal)}>Attendance</button>
+                            </div>
+                          </Card.Content>
+                        </Card>
+                    </Grid.Column>
                   ))}
-                </Table.Body>
-              </Table> : ""}
+                  </Grid.Row>
+                  </Grid>
+              </div>
             </div>
           </div>
         </div>
