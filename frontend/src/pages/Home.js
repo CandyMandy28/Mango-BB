@@ -22,6 +22,17 @@ export default class Home extends React.Component {
     });
   }
 
+  handleCountAttendance = (crn, attendancePresent, attendanceTotal) => {
+    let body = {
+      attendanceTotal: attendanceTotal + 1,
+      attendancePresent: attendancePresent + 1
+    }
+    let url = `http://localhost:4000/api/enrollments/b2/${crn}`;
+    axios.put(url, body).then(res => {
+      this.fetchClasses();
+    });
+  }
+
   render() {
     return (
       <div className={"pageCont"}>
@@ -44,9 +55,13 @@ export default class Home extends React.Component {
                           <Card.Content>
                             <p>Rank: {class_info.score}</p>
                             <p>Attendance: {(class_info.attendanceTotal == 0) ? 0 : Math.round((class_info.attendancePresent / class_info.attendanceTotal)*100) } %</p>
+                            {/* <button class="ui primary right floated button" onClick={() => class_info.attendancePresent + 1}>Attendance</button> */}
                           </Card.Content>
                           <Card.Content extra>
-                            <Icon name='user' /> {class_info.teacherID}
+                            <div className="cardInfo">
+                              <Icon name='user' /> {class_info.teacherID}
+                              <button class="ui primary right floated button" onClick={() => this.handleCountAttendance(class_info.crn, class_info.attendancePresent, class_info.attendanceTotal)}>Attendance</button>
+                            </div>
                           </Card.Content>
                         </Card>
                     </Grid.Column>

@@ -74,6 +74,23 @@ body {
     width: auto;
 }
 
+.cardInfo {
+    align-self: center;
+    // text-align: left;
+
+    .meta {
+        margin: .5em 0 .5em !important;
+        font-size: 12px !important;
+        line-height: 150% !important;
+        color: #7f7f7f !important;
+    }
+
+    .description {
+        font-size: 12px !important;
+        font-weight: bold !important;
+        color: #666666 !important;
+    }
+}
 
 // Search CSS
 
