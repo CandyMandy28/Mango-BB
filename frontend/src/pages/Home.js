@@ -33,13 +33,6 @@ export default class Home extends React.Component {
     });
   }
 
-  handleRemoveCourse = (crn) => {
-    let url = `http://localhost:4000/api/enrollments/b2/${crn}`;
-    axios.delete(url).then((res) => {
-      this.fetchClasses();
-    });
-  }
-
   render() {
     return (
       <div className={"pageCont"}>
@@ -59,7 +52,6 @@ export default class Home extends React.Component {
                     <Grid.Column key={class_info.crn}>
                         <Card key={class_info.crn}>
                           <Card.Content header={class_info.className} />
-                          <Button basic color='red' primary onClick={() => this.handleRemoveCourse(class_info.crn)}><Icon name='minus' /></Button>
                           <Card.Content>
                             <p>Rank: {class_info.score}</p>
                             <p>Attendance: {(class_info.attendanceTotal == 0) ? 0 : Math.round((class_info.attendancePresent / class_info.attendanceTotal)*100) } %</p>

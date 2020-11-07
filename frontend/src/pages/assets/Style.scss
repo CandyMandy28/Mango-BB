@@ -116,6 +116,7 @@ body {
     align-self: center;
     margin-bottom: 50px;
     display: flex;
+    flex-direction: column;
 
     .meta {
         margin: .5em 0 .5em !important;
