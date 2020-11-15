@@ -19,14 +19,14 @@ export default class Search extends React.Component {
   }
 
   fetchClass(query) {
-    let url = `http://localhost:4000/api/classes/search/${query}/b2`;
+    let url = `http://localhost:4000/api/classes/search/${query}/${localStorage.getItem('netid')}`;
     axios.get(url).then((res) => {
       this.setState({ classes: res.data.data });
     });
   }
 
   fetchClasses() {
-    let url = "http://localhost:4000/api/enrollments/b2";
+    let url = `http://localhost:4000/api/enrollments/${localStorage.getItem('netid')}`;
     axios.get(url).then((res) => {
       this.setState({ enrollments: res.data.data });
     });
@@ -43,7 +43,7 @@ export default class Search extends React.Component {
   handleAddCourse = (crn) => {
     let body = {
       crn: crn,
-      netID: 'b2',
+      netID: localStorage.getItem('netid'),
       score: 0,
       attendanceTotal: 0,
       attendancePresent: 0
@@ -64,7 +64,7 @@ export default class Search extends React.Component {
   }
 
   handleRemoveCourse = (crn) => {
-    let url = `http://localhost:4000/api/enrollments/b2/${crn}`;
+    let url = `http://localhost:4000/api/enrollments/${localStorage.getItem('netid')}/${crn}`;
     axios.delete(url).then((res) => {
       this.fetchClasses();
     });

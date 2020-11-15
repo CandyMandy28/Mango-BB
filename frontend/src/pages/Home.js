@@ -7,7 +7,7 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      classes: ["sdfa", "sdfa"],
+      classes: [],
     };
   }
 
@@ -16,7 +16,7 @@ export default class Home extends React.Component {
   }
 
   fetchClasses() {
-    let url = "http://localhost:4000/api/enrollments/b2";
+    let url = "http://localhost:4000/api/enrollments/" + localStorage.getItem('netid');
     axios.get(url).then((res) => {
       this.setState({ classes: res.data.data });
     });
@@ -27,7 +27,7 @@ export default class Home extends React.Component {
       attendanceTotal: attendanceTotal + 1,
       attendancePresent: attendancePresent + 1
     }
-    let url = `http://localhost:4000/api/enrollments/b2/${crn}`;
+    let url = `http://localhost:4000/api/enrollments/${localStorage.getItem('netid')}/${crn}`;
     axios.put(url, body).then(res => {
       this.fetchClasses();
     });
@@ -60,7 +60,7 @@ export default class Home extends React.Component {
                           <Card.Content extra>
                             <div className="cardInfo">
                               <Icon name='user' /> {class_info.teacherID}
-                              <button class="ui primary right floated button" onClick={() => this.handleCountAttendance(class_info.crn, class_info.attendancePresent, class_info.attendanceTotal)}>Attendance</button>
+                              <button className="ui primary right floated button" onClick={() => this.handleCountAttendance(class_info.crn, class_info.attendancePresent, class_info.attendanceTotal)}>Attendance</button>
                             </div>
                           </Card.Content>
                         </Card>

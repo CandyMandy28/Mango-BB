@@ -11,12 +11,13 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Collection from "./pages/Collection";
 import Profile from "./pages/Profile";
+import Login from "./pages/Login";
 
 
 const routing = (
   <Router>
     <div>
-      {/* <Route exact path="/" component={Login} /> */}
+      <Route exact path="/" component={Login} />
       <Route path="/home" component={Home} />
       <Route path="/search" component={Search} />
       <Route path="/collection" component={Collection} />
