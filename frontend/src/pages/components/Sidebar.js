@@ -14,6 +14,16 @@ export default class Sidebar extends React.Component {
     }
   }
 
+  componentDidMount () {
+    if (!localStorage.getItem('email') || !localStorage.getItem('email').length > 0) {
+      this.setState({isSignedIn: false})
+    }
+  }
+
+  handleSignOut () {
+    localStorage.clear();
+  }
+
   render () {
     return (
       <div className={"navCont"}>
@@ -30,7 +40,7 @@ export default class Sidebar extends React.Component {
         <NavLink to={"/profile"}>
           <FontAwesomeIcon icon={faUser} />
         </NavLink>
-        <NavLink to={"/"} className={"btnSignOut"}>
+        <NavLink to={"/"} onClick={this.handleSignOut} className={"btnSignOut"}>
           <FontAwesomeIcon icon={faLock} />
         </NavLink>
       </div>
