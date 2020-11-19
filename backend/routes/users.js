@@ -19,12 +19,12 @@ module.exports = function (router, db) {
             // Students
             if (req.body.acc_type == 1) {
                 sql_query = `INSERT INTO Students VALUES
-                ('${req.body.netid}', '${req.body.name}', '${req.body.email}')`;
+                ('${req.body.netid}', "${req.body.name}", '${req.body.email}')`;
             }
             // Teachers
             else {
                 sql_query = `INSERT INTO Teachers VALUES
-                ('${req.body.netid}', '${req.body.name}', '${req.body.email}')`;
+                ('${req.body.netid}', "${req.body.name}", '${req.body.email}')`;
             }
 
             db.query(sql_query, (err, result) => {
