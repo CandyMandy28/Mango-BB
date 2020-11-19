@@ -116,6 +116,7 @@ body {
     align-self: center;
     margin-bottom: 50px;
     display: flex;
+    flex-direction: column;
 
     .meta {
         margin: .5em 0 .5em !important;
@@ -142,5 +143,52 @@ body {
 
 .classhissize {
     width: 40%;
+}
+
+/* Login CSS */
+
+.loginCont {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+    .loginTab {
+        width: 400px;
+        align-items: center;
+        justify-content: center;
+
+        .tabular .item {
+            width: 50%;
+        }
+
+        .input {
+            width: 100%;
+            margin: 10px 0;
+            input {
+                border-radius: 5px !important;
+            }
+        }
+
+        .dropdown {
+            width: 100%;
+            margin: 10px 0;
+            height: 50px;
+            line-height: 25px;
+            display: block;
+            border-radius: 5px !important;
+            i {
+                line-height: 25px !important;
+            }
+        }
+
+        .button {
+            height: 40px;
+            width: 150px;
+            display: block;
+            margin: 0 auto;
+            margin-top: 15px;   
+        }
+    }
 }
 
