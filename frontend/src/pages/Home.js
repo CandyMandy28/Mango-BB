@@ -3,6 +3,9 @@ import { Grid, Card, Icon, Divider, Button, Menu, Header } from "semantic-ui-rea
 import Sidebar from "./components/Sidebar";
 import axios from "axios";
 
+import AttendanceModal from "./components/AttendanceModal";
+import QuestionModal from "./components/QuestionModal";
+
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -33,9 +36,19 @@ export default class Home extends React.Component {
     });
   }
 
+  openAttendanceModal () {
+    this.refs.attnchild.handleOpen();
+  }
+
+  openQuestionModal () {
+    this.refs.questionchild.handleOpen();
+  }
+
   render() {
     return (
       <div className={"pageCont"}>
+        <AttendanceModal ref="attnchild"></AttendanceModal>
+        <QuestionModal ref="questionchild"></QuestionModal>
         <div className={"sidebarCont"}>
           <Sidebar></Sidebar>
         </div>
@@ -50,20 +63,39 @@ export default class Home extends React.Component {
                 <Grid.Row>
                   {this.state.classes.map((class_info) => (
                     <Grid.Column key={class_info.crn}>
-                        <Card key={class_info.crn}>
-                          <Card.Content header={class_info.className} />
-                          <Card.Content>
-                            <p>Rank: {class_info.score}</p>
-                            <p>Attendance: {(class_info.attendanceTotal == 0) ? 0 : Math.round((class_info.attendancePresent / class_info.attendanceTotal)*100) } %</p>
-                            {/* <button class="ui primary right floated button" onClick={() => class_info.attendancePresent + 1}>Attendance</button> */}
-                          </Card.Content>
-                          <Card.Content extra>
-                            <div className="cardInfo">
-                              <Icon name='user' /> {class_info.teacherID}
-                              <button className="ui primary right floated button" onClick={() => this.handleCountAttendance(class_info.crn, class_info.attendancePresent, class_info.attendanceTotal)}>Attendance</button>
-                            </div>
-                          </Card.Content>
-                        </Card>
+                      <Card key={class_info.crn}>
+                        <Card.Content>
+                          <Card.Header>{class_info.className}</Card.Header>
+                          <Card.Meta>{class_info.teacherID}</Card.Meta>
+                          <Card.Description>
+                            <p>Rank: <strong>{class_info.score}</strong></p>
+                            <p>
+                              Attendance:{" "}
+                              <strong>
+                                {class_info.attendanceTotal == 0
+                                ? 0 + "%"
+                                : Math.round(
+                                    (class_info.attendancePresent /
+                                      class_info.attendanceTotal) *
+                                      100
+                                  ) + "%"}
+                              </strong>
+                            </p>
+                          </Card.Description>
+                        </Card.Content>
+                        <Card.Content extra>
+                          <div className="ui two buttons">
+                            <Button basic color="green" 
+                              onClick={() => this.openAttendanceModal()}>
+                              Attendance
+                            </Button>
+                            <Button basic color="red"
+                              onClick={() => this.openQuestionModal()}>
+                              Questions
+                            </Button>
+                          </div>
+                        </Card.Content>
+                      </Card>
                     </Grid.Column>
                   ))}
                 </Grid.Row>
