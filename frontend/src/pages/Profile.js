@@ -22,8 +22,6 @@ export default class Profile extends React.Component {
         <div className={"mainCont"}>
           <Header as='h1'>Profile</Header>
           <div className={"container"}>
-
-            
             
           </div>
         </div>

@@ -3,17 +3,21 @@ var mongoose = require('mongoose');
 
 // Define our task schema
 var ResponseSchema = new mongoose.Schema({
-    timeAsked: {
+    timeAnswered: {
         type: Date,
         default: Date.now
     },
-    correctAnswer: {
+    questionID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question"
+    },
+    answer: {
         type: String,
         trim: true
     },
-    classID : { 
-        type : int,
-        required: true
+    netID : { 
+        type: String,
+        trim: true
     }
 });
 

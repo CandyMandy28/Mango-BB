@@ -7,11 +7,15 @@ var QuestionSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    question: {
+        type: String,
+        trim: true
+    },
     correctAnswer: {
         type: String,
         trim: true
     },
-    classID : { 
+    sessionID : { 
         type : Number,
         required: true
     }
