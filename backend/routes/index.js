@@ -7,4 +7,5 @@ module.exports = function (app, router, db) {
     app.use('/api/classes', require('./classes.js')(router, db));
     app.use('/api/enrollments', require('./enrollments.js')(router, db));
     app.use('/api/teachers', require('./teachers.js')(router, db));
+    app.use('/api/sessions', require('./sessions.js')(router, db));
 };
