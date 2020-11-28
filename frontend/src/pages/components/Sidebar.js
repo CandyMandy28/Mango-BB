@@ -28,7 +28,7 @@ export default class Sidebar extends React.Component {
     return (
       <div className={"navCont"}>
         {this.state.isSignedIn ? "" : <Redirect to="/" push={true} />}
-        <NavLink to={"/home"} exact >
+        <NavLink to={"/home"} exact className={this.props.url=="teacherAttendance" ? "active" : ""} >
           <FontAwesomeIcon icon={faHome} />
         </NavLink>
         <NavLink to={"/search"}>
