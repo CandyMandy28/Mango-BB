@@ -23,7 +23,6 @@ export default class Home extends React.Component {
         <div className={"mainCont"}>
           <Header as="h1">Course Page</Header>
           <Divider />
-          <br></br>
           <div className={"container"}>
             {localStorage.getItem("acc_type") === 1
               ? <StudentCourses></StudentCourses>

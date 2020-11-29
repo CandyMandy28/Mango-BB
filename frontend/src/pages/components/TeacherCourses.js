@@ -2,6 +2,9 @@ import React from "react";
 import { Grid, Card, Button } from "semantic-ui-react";
 import axios from 'axios';
 
+import AddCourseModal from "./AddCourseModal";
+import { faDice } from "@fortawesome/free-solid-svg-icons";
+
 export default class StudentCourses extends React.Component {
 
     constructor(props) {
@@ -43,16 +46,26 @@ export default class StudentCourses extends React.Component {
         this.refs.questionchild.handleOpen();
     }
 
+    openAddCourseModal() {
+        this.refs.addcoursechild.handleOpen();
+    }
+
     openPage(className, crn) {
         localStorage.setItem("className", className);
         localStorage.setItem("crn", crn);
-        window.location.assign('/teacherAttendance/');
+        window.location.assign('/teacherAttendance');
     }
 
     render() {
         return (
             <div className={"collectionCont"}>
+                <AddCourseModal ref="addcoursechild"></AddCourseModal>
                 <Grid columns={3}>
+                    <Grid.Row>
+                        <Grid.Column> 
+                            <Button onClick={() => this.openAddCourseModal()}>Add Course</Button>
+                        </Grid.Column>
+                    </Grid.Row>
                     <Grid.Row>
                         {this.state.classes.map((class_info) => (
                             <Grid.Column key={class_info.crn}>
