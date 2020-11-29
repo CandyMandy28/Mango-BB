@@ -12,6 +12,7 @@ import Search from "./pages/Search";
 import Collection from "./pages/Collection";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
+import TeacherAttendance from "./pages/TeacherAttendance";
 
 
 const routing = (
@@ -22,6 +23,7 @@ const routing = (
       <Route path="/search" component={Search} />
       <Route path="/collection" component={Collection} />
       <Route path="/profile" component={Profile} />
+      <Route path="/teacherAttendance" component={TeacherAttendance} />
     </div>
   </Router>
 );
