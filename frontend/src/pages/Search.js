@@ -35,7 +35,7 @@ export default class Search extends React.Component {
   handleInputChange = e => {
     let query_local = e.target.value;
     this.setState({query : query_local});
-    if (query_local.length != 0){
+    if (query_local.length !== 0){
       this.fetchClass(query_local);
     }
   }

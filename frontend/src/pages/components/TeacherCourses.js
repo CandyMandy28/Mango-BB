@@ -1,16 +1,15 @@
 import React from "react";
-import { Grid, Card, Icon, Divider, Button, Menu, Header } from "semantic-ui-react";
+import { Grid, Card, Button } from "semantic-ui-react";
 import axios from 'axios';
-
-import TeacherAttendance from "../TeacherAttendance";
-import QuestionModal from "./QuestionModal";
 
 export default class StudentCourses extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            classes: []
+            classes: [],
+            crn: 0,
+            class: ""
         }
     }
 
@@ -44,6 +43,12 @@ export default class StudentCourses extends React.Component {
         this.refs.questionchild.handleOpen();
     }
 
+    openPage(className, crn) {
+        localStorage.setItem("className", className);
+        localStorage.setItem("crn", crn);
+        window.location.assign('/teacherAttendance/');
+    }
+
     render() {
         return (
             <div className={"collectionCont"}>
@@ -59,12 +64,12 @@ export default class StudentCourses extends React.Component {
                                     <Card.Content extra>
                                         <div className="ui two buttons">
                                             <Button basic color="green"
-                                                onClick={() => window.location.assign('/teacherAttendance')}>
+                                                onClick={() => this.openPage(class_info.className, class_info.crn)}>
                                                 Attendance
                             </Button>
                                             <Button basic color="red"
-                                                // onClick={() => this.openQuestionModal()}
-                                                >
+                                            // onClick={() => this.openQuestionModal()}
+                                            >
                                                 Questions
                             </Button>
                                         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Card, Icon, Divider, Button, Menu, Header } from "semantic-ui-react";
+import { Grid, Card, Button } from "semantic-ui-react";
 import axios from 'axios';
 
 import AttendanceModal from "./AttendanceModal";
@@ -62,7 +62,7 @@ export default class StudentCourses extends React.Component {
                                             <p>
                                                 Attendance:{" "}
                                                 <strong>
-                                                    {class_info.attendanceTotal == 0
+                                                    {class_info.attendanceTotal === 0
                                                         ? 0 + "%"
                                                         : Math.round(
                                                             (class_info.attendancePresent /

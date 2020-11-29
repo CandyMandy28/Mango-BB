@@ -1,6 +1,5 @@
 import React from "react";
-import { Button, Rating, Modal, Table } from "semantic-ui-react";
-import axios from 'axios';
+import { Button, Modal, Table } from "semantic-ui-react";
 
 import "../assets/Style.scss";
 
