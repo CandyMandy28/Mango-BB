@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Card, Table, Icon, Divider, Button, Menu, Header } from "semantic-ui-react";
+import { Table, Divider, Header } from "semantic-ui-react";
 import axios from 'axios';
 import Sidebar from "./components/Sidebar";
 
@@ -10,36 +10,37 @@ export default class TeacherAttendance extends React.Component {
     this.state = {
       modalOpen: false,
       classes: [],
-      enrollments: []
+      enrollments: [],
+      class: ""
     }
   }
 
-  handleOpen = () => {
-    this.setState({ modalOpen: true });
-    this.setState({ options: [] })
+  componentDidMount() {
+    this.fetchClass();
   }
 
-  handleClose = () => {
-    this.setState({
-      modalOpen: false,
-      movies: [],
-      classes: []
-    });
-  }
-
-  fetchClass(query) {
-    let url = `http://localhost:4000/api/enrollments/teacher/courses/${localStorage.getItem('netid')}`;
-    axios.get(url).then((res) => {
-      this.setState({ classes: res.data.data });
-    });
-  }
-
-  fetchClasses() {
-    let url = "http://localhost:4000/api/enrollments/" + localStorage.getItem('netid');
+  fetchClass() {
+    let url = `http://localhost:4000/api/enrollments/teacher/courses/${localStorage.getItem("crn")}`;
+    console.log(url);
     axios.get(url).then((res) => {
       this.setState({ enrollments: res.data.data });
+      console.log(res.data.data);
     });
   }
+
+  // fetchClasses() {
+  //   let url = "http://localhost:4000/api/enrollments/" + localStorage.getItem('netid');
+  //   axios.get(url).then((res) => {
+  //     this.setState({ enrollments: res.data.data });
+  //   });
+  // }
+
+  // fetchClassName() {
+  //   let url = "http://localhost:4000/api/classes/teachers/" + localStorage.getItem('netid');
+  //   axios.get(url).then((res) => {
+  //     this.setState({ enrollments: res.data.data });
+  //   });
+  // }
 
   handleAddCourse = (crn) => {
     let body = {
@@ -51,8 +52,8 @@ export default class TeacherAttendance extends React.Component {
     }
     let url = "http://localhost:4000/api/enrollments";
     axios.post(url, body).then(res => {
-      this.fetchClass(this.state.query);
-      this.fetchClasses();
+      this.fetchClass();
+      // this.fetchClasses();
       this.setState({ show_success: true });
       setTimeout(
         function () {
@@ -71,7 +72,7 @@ export default class TeacherAttendance extends React.Component {
           <Sidebar url="teacherAttendance"></Sidebar>
         </div>
         <div className={"mainCont"}>
-          <Header as="h1">Attendance Page</Header>
+            <Header as="h1"> {localStorage.getItem("className")}</Header>
           <Divider />
           <br></br>
           <Table celled className={"movieContModal"}>
@@ -86,38 +87,16 @@ export default class TeacherAttendance extends React.Component {
               </Table.Row>
             </Table.Header>
             <Table.Body>
+              {this.state.enrollments.map((student) => (              
               <Table.Row>
-                <Table.Cell>04/11/2020</Table.Cell>
+                <Table.Cell>{student.netID}</Table.Cell>
                 <Table.Cell>Present</Table.Cell>
                 <Table.Cell>Present</Table.Cell>
                 <Table.Cell>Present</Table.Cell>
                 <Table.Cell>Present</Table.Cell>
                 <Table.Cell>Present</Table.Cell>
               </Table.Row>
-              <Table.Row>
-                <Table.Cell>04/11/2020</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>04/11/2020</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>04/11/2020</Table.Cell>
-                <Table.Cell color="red">Absent</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-              </Table.Row>
+              ))}
             </Table.Body>
           </Table>
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Card, Icon, Divider, Button, Menu, Header } from "semantic-ui-react";
+import { Divider, Header } from "semantic-ui-react";
 import Sidebar from "./components/Sidebar";
 
 import StudentCourses from "./components/StudentCourses";
@@ -25,7 +25,7 @@ export default class Home extends React.Component {
           <Divider />
           <br></br>
           <div className={"container"}>
-            {localStorage.getItem("acc_type") == 1
+            {localStorage.getItem("acc_type") === 1
               ? <StudentCourses></StudentCourses>
               : <TeacherCourses></TeacherCourses>
             }
