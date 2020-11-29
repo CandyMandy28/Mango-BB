@@ -12,4 +12,5 @@ module.exports = function (app, router, db) {
     app.use('/api/responses', require('./responses.js')(router, db));
     app.use('/api/sessions', require('./sessions.js')(router, db));
     app.use('/api/profiles', require('./profiles.js')(router, db));
+    app.use('/api/attendance', require('./attendance.js')(router, db));
 };
