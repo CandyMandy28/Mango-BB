@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Button, Table, Icon, Header, Message } from 'semantic-ui-react';
+import { Input, Button, Table, Icon, Header, Message, Divider } from 'semantic-ui-react';
 import Sidebar from "./components/Sidebar";
 import axios from 'axios';
 
@@ -78,6 +78,7 @@ export default class Search extends React.Component {
         </div>  
         <div className={'mainCont'}>
           <Header as='h1'>Search</Header>
+          <Divider />
           <div className={'container'}>
             <Input icon="search" placeholder="Search by class name..." value={this.state.query} onChange={this.handleInputChange} style={{marginBottom: !this.state.show_success ? '50px': ''}}/>
             {this.state.show_success ? <Message

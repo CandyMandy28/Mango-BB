@@ -65,6 +65,7 @@ body {
         flex: 1;
         display: flex;
         flex-direction: column;
+        padding-top: 25px;
     }
 }
 
@@ -207,3 +208,32 @@ body {
         }
     }
 }
+
+/* Profile Page CSS */
+
+.profile_cont {
+    table {
+        width: 50% !important;
+        border: 1px solid;
+        tr {
+            height: 70px;
+            
+            td {
+                border: 0px solid !important;
+                font-weight: bold;
+                padding: 10px !important;
+            }
+            .input {
+                width: 100% !important;
+            }
+            input {
+                border-radius: 5px !important;
+            }
+        }
+    }
+    button {
+        width: 150px;
+        height: 45px;
+    }
+}
+

@@ -16,8 +16,7 @@ var QuestionSchema = new mongoose.Schema({
         trim: true
     },
     sessionID : { 
-        type : Number,
-        required: true
+        type : Number
     }
 });
 
