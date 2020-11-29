@@ -18,6 +18,9 @@ var ResponseSchema = new mongoose.Schema({
     netID : { 
         type: String,
         trim: true
+    },
+    sessionID : { 
+        type : Number
     }
 });
 
