@@ -6,27 +6,36 @@ module.exports = function (router, db) {
     router.route("/attendance/:crn")
         .get(async function (req, res) {
             let sql_query = `SELECT netID FROM Enrollments WHERE crn = ${req.params.crn}`;
-            ldb.query(sql_query, (err, result) => {
+            db.query(sql_query, (err, result) => {
                 if (err) throw err;
-                let temp = {};
-                // let fetch_session = `SELECT sessionID FROM Sessions WHERE crn = ${req.params.crn}`;
-                // db.query(fetch_session, (err, result2) => {
-                //     console.log(result);
-                //     Object.keys(result).forEach(function(netID) {
-                //         let sess_arr = []
-                //         Object.keys(result2).forEach(async function(session) {
-                //             const response = await responseModel.exists({sessionID: result2[session].sessionID, netID: result[netID].netID});
-                //             if (response) {
-                //                 sess_arr.push(1)
-                //             }
-                //             else {
-                //                 sess_arr.push(0)
-                //             }
-                //             console.log(sess_arr);
-                //         });
-                //         res.json({data: temp});
-                //     });
-                // });
+                let students = [];
+                result.forEach(student => {
+                    students.push(student.netID);
+                })
+                let fetch_session = `SELECT sessionID, startTime FROM Sessions WHERE crn = ${req.params.crn}`;
+                db.query(fetch_session, async (err, result2) => {
+                    let sessions = [];
+                    let sessionTime = [];
+                    result2.forEach(sess => {
+                        sessions.push(sess.sessionID);
+                        sessionTime.push(sess.startTime);
+                    })
+                    let ret_val = {};
+                    for (let netID in students) {
+                        let temp = [];
+                        for (let session in sessions) {
+                            const response = await responseModel.exists({sessionID: sessions[session], netID: students[netID]});
+                            if (response) {
+                                temp.push(1)
+                            }
+                            else {
+                                temp.push(0)
+                            }
+                        }
+                        ret_val[students[netID]] = temp;
+                    }
+                    res.json({"data": ret_val, "session": sessionTime});
+                });
             });
         });
         
