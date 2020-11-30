@@ -25,28 +25,17 @@ export default class StudentCourses extends React.Component {
         });
     }
     
-    handleCountAttendance = (crn, attendancePresent, attendanceTotal) => {
-        let body = {
-            attendanceTotal: attendanceTotal + 1,
-            attendancePresent: attendancePresent + 1
-        }
-        let url = `http://localhost:4000/api/enrollments/${localStorage.getItem('netid')}/${crn}`;
-        axios.put(url, body).then(res => {
-            this.fetchClasses();
-        });
+    openAttendanceModal(crn) {
+        this.refs.attnchild.handleOpen(crn);
     }
     
-    openAttendanceModal() {
-        this.refs.attnchild.handleOpen();
-    }
-    
-    openQuestionModal() {
+    openQuestionModal(crn) {
         this.refs.questionchild.handleOpen();
     }
 
     render() {
         return (
-            <div className={"collectionCont"}>
+            <div className={"collectionCont studentCourses"}>
                 <AttendanceModal ref="attnchild"></AttendanceModal>
                 <QuestionModal ref="questionchild"></QuestionModal>
                 <Grid columns={3}>
@@ -76,11 +65,11 @@ export default class StudentCourses extends React.Component {
                                     <Card.Content extra>
                                         <div className="ui two buttons">
                                             <Button basic color="green"
-                                                onClick={() => this.openAttendanceModal()}>
+                                                onClick={() => this.openAttendanceModal(class_info.crn)}>
                                                 Attendance
                             </Button>
                                             <Button basic color="red"
-                                                onClick={() => this.openQuestionModal()}>
+                                                onClick={() => this.openQuestionModal(class_info.crn)}>
                                                 Questions
                             </Button>
                                         </div>

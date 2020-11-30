@@ -38,6 +38,35 @@ module.exports = function (router, db) {
                 });
             });
         });
+
+    router.route("/attendance/:crn/:netid")
+        .get(async function (req, res) {
+            let sql_query = `SELECT netID FROM Enrollments WHERE crn = ${req.params.crn}`;
+            let fetch_session = `SELECT sessionID, startTime FROM Sessions WHERE crn = ${req.params.crn}`;
+            db.query(fetch_session, async (err, result2) => {
+                let sessions = [];
+                let sessionTime = [];
+                result2.forEach(sess => {
+                    sessions.push(sess.sessionID);
+                    sessionTime.push(sess.startTime);
+                })
+                let ret_val = {};
+                let temp = [];
+                let total_present = 0;
+                for (let session in sessions) {
+                    const response = await responseModel.exists({sessionID: sessions[session], netID: req.params.netid});
+                    if (response) {
+                        total_present += 1;
+                        temp.push({session: sessionTime[session], attendance: 1})
+                    }
+                    else {
+                        temp.push({session: sessionTime[session], attendance: 0})
+                    }
+                }
+                
+                res.json({"data": temp, "attn_percent": Math.round(total_present / sessions.length * 100)});
+            });
+        });
         
   return router;
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal, Table } from "semantic-ui-react";
-
+import axios from 'axios';
 import "../assets/Style.scss";
 
 export default class AttendanceModal extends React.Component {
@@ -9,22 +9,38 @@ export default class AttendanceModal extends React.Component {
     super(props)
     this.state = {
         modalOpen: false,
-        selCollection: {},
-        ownerName: "",
-        movies: [],
-        isOwner: false
+        attendance: [],
+        class: [],
+        crn: 0,
+        show_class: false,
+        attn_percent: ""
     }
   }
 
-  handleOpen = () => {
+  fetchClass(crn) {
+    console.log(crn)
+    let url = `http://localhost:4000/api/classes/${crn}`
+    axios.get(url).then((res) => {
+        this.setState({ class: res.data.data, show_class: true });
+        this.fetchAttendance(crn);
+    });
+  }
+
+  fetchAttendance(crn) {
+    let url = `http://localhost:4000/api/attendance/${crn}/${localStorage.getItem("netid")}`
+    axios.get(url).then((res) => {
+        this.setState({ attendance: res.data.data, attn_percent: (res.data.attn_percent ? res.data.attn_percent : 0) + "%" });
+    });
+  }
+
+  handleOpen = (crn) => {
     this.setState({ modalOpen: true });
-    this.setState({options: []})
+    this.fetchClass(crn);
   }
 
   handleClose = () => {
     this.setState({ 
         modalOpen: false,
-        movies: []
     });
   }
 
@@ -32,12 +48,11 @@ export default class AttendanceModal extends React.Component {
     return (
         <Modal open={this.state.modalOpen} onClose={this.handleClose} size="tiny">
             <Modal.Header>
-                CS 411: Database Systems
+                {this.state.show_class ? this.state.class[0].className : ""}
             </Modal.Header>
             <Modal.Content className={"modalCont"}>
-                <p>By: <strong>Macleod8</strong></p>
-                <p>Rank: <strong>2</strong></p>
-                <p>Attendace: <strong>60%</strong></p>
+                <p>By: <strong>{this.state.show_class ? this.state.class[0].teacherID : ""}</strong></p>
+                <p>Attendace: <strong>{this.state.attn_percent}</strong></p>
                 <Table celled className={"movieContModal"}>
                     <Table.Header>
                         <Table.Row>
@@ -46,18 +61,12 @@ export default class AttendanceModal extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        <Table.Row>
-                            <Table.Cell>04/11/2020</Table.Cell>
-                            <Table.Cell>Present</Table.Cell>
-                        </Table.Row>
-                        <Table.Row>
-                            <Table.Cell>04/11/2020</Table.Cell>
-                            <Table.Cell>Present</Table.Cell>
-                        </Table.Row>
-                        <Table.Row>
-                            <Table.Cell>04/11/2020</Table.Cell>
-                            <Table.Cell color="red">Absent</Table.Cell>
-                        </Table.Row>
+                        {this.state.attendance.map(attn => (
+                            <Table.Row>
+                                <Table.Cell>{attn.session.substring(0,10)}</Table.Cell>
+                                <Table.Cell>{attn.attendance == 1 ? "Present" : "Absent"}</Table.Cell>
+                            </Table.Row>
+                        ))}
                     </Table.Body>
                 </Table>
             </Modal.Content>

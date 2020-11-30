@@ -10,7 +10,8 @@ export default class Sidebar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isSignedIn: true
+      isSignedIn: true,
+      hideSearch: false
     }
   }
 
@@ -18,8 +19,8 @@ export default class Sidebar extends React.Component {
     if (!localStorage.getItem('email') || !localStorage.getItem('email').length > 0) {
       this.setState({isSignedIn: false})
     }
-    if (localStorage.getItem('acc_type') == 1) {
-      this.setState({hideSearch: false})
+    if (localStorage.getItem('acc_type') == '2') {
+      this.setState({hideSearch: true})
     }
   }
 
@@ -35,12 +36,15 @@ export default class Sidebar extends React.Component {
           <FontAwesomeIcon icon={faHome} />
         </NavLink>
         
-          {this.state.hideSearch ? <NavLink to={"/search"}>
-            <FontAwesomeIcon icon={faSearch} /> </NavLink>: ""}
+        {!this.state.hideSearch ? 
+          <NavLink to={"/search"}>
+            <FontAwesomeIcon icon={faSearch} /> 
+          </NavLink>
+        : ""}
         
-        <NavLink to={"/collection"}>
+        {/* <NavLink to={"/collection"}>
           <FontAwesomeIcon icon={faFilm} />
-        </NavLink>
+        </NavLink> */}
         <NavLink to={"/profile"}>
           <FontAwesomeIcon icon={faUser} />
         </NavLink>

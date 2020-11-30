@@ -19,12 +19,13 @@ export default class QuestionModal extends React.Component {
   }
 
   componentDidMount () {
-    this.startTimer();
+    
   }
 
   handleOpen = () => {
     this.setState({ modalOpen: true });
     this.setState({options: []})
+    this.startTimer();
   }
 
   handleClose = () => {
