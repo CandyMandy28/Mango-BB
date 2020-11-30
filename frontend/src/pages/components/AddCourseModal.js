@@ -73,6 +73,12 @@ export default class AddCourseModal extends React.Component {
     };
     handleChange = (e, { value }) => this.setState({ value })
 
+    handleClose = () => {
+        this.setState({ 
+            modalOpen: false
+        });
+      }
+
     render() {
         return (
             <Modal open={this.state.modalOpen} onClose={this.handleClose} size="small">
@@ -94,7 +100,7 @@ export default class AddCourseModal extends React.Component {
                 <Modal.Actions>
                     <Button type='submit' color='blue' onClick={() => this.handleAddCourse()}>
                         Confirm
-                </Button>
+                    </Button>
                 </Modal.Actions>
             </Modal>
         );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Input, Table, Header } from "semantic-ui-react";
+import { Divider, Input, Table, Header, Button } from "semantic-ui-react";
 import Sidebar from "./components/Sidebar";
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ export default class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      profile: ""
+      profile: "",
     }
   }
 
@@ -35,6 +35,22 @@ export default class Profile extends React.Component {
     }
     
   }
+
+  handleSubmit() {
+    let body = {
+      name: this.state.profile
+    }
+    let url = `http://localhost:4000/api/profiles/${localStorage.getItem('netid')}/${localStorage.getItem('acc_type')}`
+    axios.put(url, body).then(res => {
+        this.fetchProfile();
+    });
+  }
+
+  handleOnChangeName = (e) => {
+    this.setState({
+      profile: e.target.value,
+    });
+  };
  
   render() {
     return (
@@ -50,7 +66,7 @@ export default class Profile extends React.Component {
               <Table.Body>
                 <Table.Row>
                   <Table.Cell>Name:</Table.Cell>
-                  <Table.Cell><Input value={this.state.profile} /></Table.Cell>
+                  <Table.Cell><Input onChange={this.handleOnChangeName} value={this.state.profile} /></Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>{localStorage.getItem("acc_type") == 1 ? "NetID:" : "TeacherID:"}</Table.Cell>
@@ -66,6 +82,7 @@ export default class Profile extends React.Component {
                 </Table.Row>
               </Table.Body>
             </Table>
+            <Button primary onClick={() => this.handleSubmit()}>Submit</Button>
           </div>
         </div>
 

@@ -58,7 +58,7 @@ export default class StudentCourses extends React.Component {
 
     render() {
         return (
-            <div className={"collectionCont"}>
+            <div className={"collectionCont teacherCourses"}>
                 <AddCourseModal ref="addcoursechild"></AddCourseModal>
                 <Grid columns={3}>
                     <Grid.Row>

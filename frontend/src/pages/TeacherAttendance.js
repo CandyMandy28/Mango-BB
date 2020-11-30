@@ -88,14 +88,14 @@ export default class TeacherAttendance extends React.Component {
             </Table.Header>
             <Table.Body>
               {this.state.enrollments.map((student) => (              
-              <Table.Row>
-                <Table.Cell>{student.netID}</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-                <Table.Cell>Present</Table.Cell>
-              </Table.Row>
+                <Table.Row>
+                  <Table.Cell>{student.netID}</Table.Cell>
+                  <Table.Cell>Present</Table.Cell>
+                  <Table.Cell>Present</Table.Cell>
+                  <Table.Cell>Present</Table.Cell>
+                  <Table.Cell>Present</Table.Cell>
+                  <Table.Cell>Present</Table.Cell>
+                </Table.Row>
               ))}
             </Table.Body>
           </Table>

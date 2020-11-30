@@ -69,22 +69,7 @@ module.exports = function (router, db) {
                 if(correct) {
                     solution = correct.correctAnswer;
                 }
-
-                /*
-                    $match the responses by question id
-                    $total the responses
-                    $match to the correct answer
-                    $total the correct responses
-                    $project correct/total
-                */
-
-                // let responses = await responseModel.aggregate([
-                //     {$match: {questionID: ObjectId(req.params.id)}},
-                //     {$group: {_id: "$answer", numTotal: { $sum: 1 }}},
-                //     {$match: { answer: solution } },
-                //     {$project: {answer: 1, numTotal: 1}}
-                // ]);
-
+                
                 let totalquery = await responseModel.find({
                     questionID: ObjectId(req.params.id)
                 });

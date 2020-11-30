@@ -19,11 +19,12 @@ module.exports = function (router, db) {
         })
 
         .put(async function (req, res) {
+            let sql_query = ""
             if (req.params.acc_type == 1) {
-                let sql_query = `UPDATE Students SET studentName = '${req.body.name}' WHERE netID = '${req.params.netID}'`;
+                sql_query = `UPDATE Students SET studentName = '${req.body.name}' WHERE netID = '${req.params.netID}'`;
             }
             else {
-                let sql_query = `UPDATE Teachers SET teacherName = '${req.body.name}' WHERE teacherID = '${req.params.netID}'`;
+                sql_query = `UPDATE Teachers SET teacherName = '${req.body.name}' WHERE teacherID = '${req.params.netID}'`;
             }
             
             db.query(sql_query, (err, result) => {
