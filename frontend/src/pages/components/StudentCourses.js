@@ -62,7 +62,7 @@ export default class StudentCourses extends React.Component {
                                             <p>
                                                 Attendance:{" "}
                                                 <strong>
-                                                    {class_info.attendanceTotal === 0
+                                                    {class_info.attendanceTotal == 0
                                                         ? 0 + "%"
                                                         : Math.round(
                                                             (class_info.attendancePresent /
