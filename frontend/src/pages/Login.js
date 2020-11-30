@@ -134,7 +134,7 @@ export default class Login extends React.Component {
         <Input placeholder='Email' name="signupEmail" type='email' onChange={this.handleOnChangeEmail} />
         <Input placeholder='Password' name="signupPassword" type='password' onChange={this.handleOnChangePassword} />
         <Dropdown placeholder='Type' selection options={this.options} onChange={this.handleOnChangeType}/>
-        {this.state.error !== "" && <div className="ui red message">
+        {this.state.error != "" && <div className="ui red message">
           <p>{this.state.error}</p>
         </div>}
         <Button onClick={this.onClickSignup} primary>Signup</Button>

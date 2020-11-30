@@ -18,7 +18,7 @@ export default class Sidebar extends React.Component {
     if (!localStorage.getItem('email') || !localStorage.getItem('email').length > 0) {
       this.setState({isSignedIn: false})
     }
-    if (localStorage.getItem('acc_type') === 1) {
+    if (localStorage.getItem('acc_type') == 1) {
       this.setState({hideSearch: false})
     }
   }
@@ -31,7 +31,7 @@ export default class Sidebar extends React.Component {
     return (
       <div className={"navCont"}>
         {this.state.isSignedIn ? "" : <Redirect to="/" push={true} />}
-        <NavLink to={"/home"} exact className={this.props.url==="teacherAttendance" ? "active" : ""} >
+        <NavLink to={"/home"} exact className={this.props.url=="teacherAttendance" ? "active" : ""} >
           <FontAwesomeIcon icon={faHome} />
         </NavLink>
         

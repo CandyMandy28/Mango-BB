@@ -53,7 +53,7 @@ export default class Profile extends React.Component {
                   <Table.Cell><Input value={this.state.profile} /></Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>{localStorage.getItem("acc_type") === 1 ? "NetID:" : "TeacherID:"}</Table.Cell>
+                  <Table.Cell>{localStorage.getItem("acc_type") == 1 ? "NetID:" : "TeacherID:"}</Table.Cell>
                   <Table.Cell><Input disabled value={localStorage.getItem("netid")} /></Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -62,7 +62,7 @@ export default class Profile extends React.Component {
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Account Type:</Table.Cell>
-                  <Table.Cell><Input disabled value={localStorage.getItem("acc_type") === 1 ? "Student" : "Teacher"} /></Table.Cell>
+                  <Table.Cell><Input disabled value={localStorage.getItem("acc_type") == 1 ? "Student" : "Teacher"} /></Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
