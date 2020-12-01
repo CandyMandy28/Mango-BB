@@ -15,6 +15,10 @@ var QuestionSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    timer : { 
+        type : Number,
+        default: 30
+    },
     sessionID : { 
         type : Number
     }
