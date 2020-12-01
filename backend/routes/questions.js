@@ -53,6 +53,16 @@ module.exports = function (router, db) {
                 res.status(404).send({message: "Error", data: err})
             }
         });
+    
+    router.route('/questions/session/:id')
+        .get(async function (req, res) {
+            try {
+                const question = await questionModel.find({sessionID: req.params.id});
+                res.send({message: "OK", data: question});
+            } catch (err) {
+                res.status(404).send({message: "Error", data: err})
+            }
+        })
 
     return router;
 }
