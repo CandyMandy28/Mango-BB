@@ -44,7 +44,7 @@ export default class StudentCourses extends React.Component {
     }
 
     openTeacherQuestion(className) {
-        
+
         //localStorage.setItem("className", className);
         this.refs.questionchild.handleOpen();
 
@@ -67,7 +67,7 @@ export default class StudentCourses extends React.Component {
                 <TeacherQuestion ref="questionchild"></TeacherQuestion>
                 <Grid columns={3}>
                     <Grid.Row>
-                        <Grid.Column> 
+                        <Grid.Column>
                             <Button onClick={() => this.openAddCourseModal()}>Add Course</Button>
                         </Grid.Column>
                     </Grid.Row>
@@ -86,8 +86,7 @@ export default class StudentCourses extends React.Component {
                                                 Attendance
                             </Button>
                                             <Button basic color="red"
-                                                onClick={() => this.openTeacherQuestion(class_info.className)}
-                                            >
+                                                onClick={() => this.openTeacherQuestion(class_info.className)}>
                                                 Questions
                             </Button>
                                         </div>

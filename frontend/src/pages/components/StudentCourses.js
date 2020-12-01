@@ -17,20 +17,22 @@ export default class StudentCourses extends React.Component {
     componentDidMount() {
         this.fetchClasses();
     }
-    
+
     fetchClasses() {
         let url = "http://localhost:4000/api/enrollments/" + localStorage.getItem('netid');
         axios.get(url).then((res) => {
             this.setState({ classes: res.data.data });
         });
     }
-    
+
     openAttendanceModal(crn) {
         this.refs.attnchild.handleOpen(crn);
     }
-    
-    openQuestionModal(crn) {
-        this.refs.questionchild.handleOpen();
+
+    openQuestionModal(crn, className) {
+        localStorage.setItem("className", className);
+        localStorage.setItem("crn", crn);
+        this.refs.questionchild.handleOpen(crn, className);
     }
 
     render() {
@@ -69,7 +71,7 @@ export default class StudentCourses extends React.Component {
                                                 Attendance
                             </Button>
                                             <Button basic color="red"
-                                                onClick={() => this.openQuestionModal(class_info.crn)}>
+                                                onClick={() => this.openQuestionModal(class_info.crn, class_info.className)}>
                                                 Questions
                             </Button>
                                         </div>
