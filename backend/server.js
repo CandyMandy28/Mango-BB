@@ -23,6 +23,29 @@ db.connect(function(err) {
     console.log("Connected!");
 });
 
+// Create trigger for Users table
+
+// let sql_query = `
+// create trigger user_assign 
+// before INSERT 
+// on 
+// Users 
+// for each row
+// begin 
+//     if new.acc_type = 1
+//     then
+//         INSERT INTO Students(netID, studentName, email)
+//         VALUES(new.id,CONCAT('Hi ', NEW.name, ', please update your date of birth.'));
+//     else
+        
+//     end if;
+// end;
+// `;
+// db.query(sql_query, (err, result) => {
+//     if (err) throw err;
+//     console.log("trigger created")
+// });
+
 // Allow CORS so that backend and frontend could be put on different servers
 var allowCrossDomain = function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

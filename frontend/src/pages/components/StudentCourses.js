@@ -46,7 +46,7 @@ export default class StudentCourses extends React.Component {
                                     <Card.Content>
                                         <Card.Header>{class_info.className}</Card.Header>
                                         <Card.Meta>{class_info.teacherID}</Card.Meta>
-                                        <Card.Description>
+                                        {/* <Card.Description>
                                             <p>Rank: <strong>{class_info.score}</strong></p>
                                             <p>
                                                 Attendance:{" "}
@@ -60,7 +60,7 @@ export default class StudentCourses extends React.Component {
                                                         ) + "%"}
                                                 </strong>
                                             </p>
-                                        </Card.Description>
+                                        </Card.Description> */}
                                     </Card.Content>
                                     <Card.Content extra>
                                         <div className="ui two buttons">
