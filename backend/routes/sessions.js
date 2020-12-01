@@ -55,6 +55,18 @@ module.exports = function (router, db) {
                 res.json({ data: result });
             });
         });
+    
+    router.route("/sessions/class/live/:crn")
+        // get the students in each class
+        .get(async function (req, res) {
+            let sql_query = 
+                `SELECT MAX(sessionID) FROM Sessions
+                WHERE Sessions.crn = '${req.params.crn}'`;
+            db.query(sql_query, (err, result) => {
+                if (err) throw err;
+                res.json({ data: result });
+            });
+        });
         
   return router;
 };
