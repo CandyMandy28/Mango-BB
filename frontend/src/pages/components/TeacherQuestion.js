@@ -64,6 +64,8 @@ export default class TeacherQuestion extends React.Component {
     // window.location.reload();
   }
 
+  handleChange = (e, { value }) => this.setState({ value })
+
   render() {
     return (
       <Modal open={this.state.modalOpen} onClose={this.handleClose} size="small">
@@ -74,64 +76,67 @@ export default class TeacherQuestion extends React.Component {
           <Grid columns={2}>
             <Grid.Row>
               <Grid.Column width={12}>
-                <h3>Question: <Input onChange={this.handleOnChangeName} value={this.state.profile} /></h3>
-
-                {/* <h3>A: <Input onChange={this.handleOnChangeName} value={this.state.profile} /></h3>
-                <h3>B: <Input onChange={this.handleOnChangeName} value={this.state.profile} /></h3>
-                <h3>C: <Input onChange={this.handleOnChangeName} value={this.state.profile} /></h3>
-                <h3>D: <Input onChange={this.handleOnChangeName} value={this.state.profile} /></h3>
-                <h3>E: <Input onChange={this.handleOnChangeName} value={this.state.profile} /></h3> */}
-                <Grid.Row>
-                  <Checkbox
-                    radio
-                    label='A'
-                    name='checkboxRadioGroup'
-                    value='A'
-                    checked={this.state.value === 'A'}
-                    onChange={this.handleChange}
-                  />
-                  <Checkbox
-                    radio
-                    label='B'
-                    name='checkboxRadioGroup'
-                    value='B'
-                    checked={this.state.value === 'B'}
-                    onChange={this.handleChange}
-                  />
-                  <Checkbox
-                    radio
-                    label='C'
-                    name='checkboxRadioGroup'
-                    value='C'
-                    checked={this.state.value === 'C'}
-                    onChange={this.handleChange}
-                  />
-                  <Checkbox
-                    radio
-                    label='D'
-                    name='checkboxRadioGroup'
-                    value='D'
-                    checked={this.state.value === 'D'}
-                    onChange={this.handleChange}
-                  />
-                  <Checkbox
-                    radio
-                    label='E'
-                    name='checkboxRadioGroup'
-                    value='E'
-                    checked={this.state.value === 'E'}
-                    onChange={this.handleChange}
-                  />
-                </Grid.Row>
-
-
-                <Modal.Actions>
-                  <Button type='submit' color='blue' onClick={() => this.handleAddQuestion()}>
-                    Submit
-                    </Button>
-                </Modal.Actions>
+                <h4>Question: <Input onChange={this.handleOnChangeName} value={this.state.profile} /></h4>
               </Grid.Column>
             </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={12}>
+                <Checkbox
+                  radio
+                  label='A'
+                  name='checkboxRadioGroup'
+                  value='A'
+                  checked={this.state.value === 'A'}
+                  onChange={this.handleChange}
+                />
+              </Grid.Column>
+              <Grid.Column width={12}>
+                <Checkbox
+                  radio
+                  label='B'
+                  name='checkboxRadioGroup'
+                  value='B'
+                  checked={this.state.value === 'B'}
+                  onChange={this.handleChange}
+                />
+              </Grid.Column>
+              <Grid.Column width={12}>
+                <Checkbox
+                  radio
+                  label='C'
+                  name='checkboxRadioGroup'
+                  value='C'
+                  checked={this.state.value === 'C'}
+                  onChange={this.handleChange}
+                />
+              </Grid.Column>
+              <Grid.Column width={12}>
+                <Checkbox
+                  radio
+                  label='D'
+                  name='checkboxRadioGroup'
+                  value='D'
+                  checked={this.state.value === 'D'}
+                  onChange={this.handleChange}
+                />
+              </Grid.Column>
+              <Grid.Column width={12}>
+                <Checkbox
+                  radio
+                  label='E'
+                  name='checkboxRadioGroup'
+                  value='E'
+                  checked={this.state.value === 'E'}
+                  onChange={this.handleChange}
+                />
+              </Grid.Column>
+              <Grid.Column></Grid.Column>
+            </Grid.Row>
+            <Modal.Actions>
+              <Button type='submit' color='blue' onClick={() => this.handleAddQuestion()}>
+                Submit
+                    </Button>
+            </Modal.Actions>
           </Grid>
         </Modal.Content>
 
