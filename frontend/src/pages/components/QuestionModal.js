@@ -61,9 +61,7 @@ export default class QuestionModal extends React.Component {
   render () {
     return (
         <Modal open={this.state.modalOpen} onClose={this.handleClose} size="small">
-            <Modal.Header>
-                CS 411: asfd Systems
-            </Modal.Header>
+            <Modal.Header as="h1"> {localStorage.getItem("className")}</Modal.Header>
             <Modal.Content className={"modalCont questionModal"}>
                 <Progress percent={this.state.timePercent} indicating>Time Remaining: {this.state.timeValue} secs</Progress>
                 <Grid columns={2}>
@@ -158,14 +156,14 @@ export default class QuestionModal extends React.Component {
                     </Grid.Row>
                 </Grid>
             </Modal.Content>
-            <Modal.Actions>
+            {/* <Modal.Actions>
                 <Button color='red'>
                     <Icon name='chevron left' /> Previous
                 </Button>
                 <Button color='green'>
                     <Icon name='chevron right' /> Next
                 </Button>
-            </Modal.Actions>
+            </Modal.Actions> */}
         </Modal>
     );
   }
