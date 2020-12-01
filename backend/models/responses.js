@@ -21,6 +21,9 @@ var ResponseSchema = new mongoose.Schema({
     },
     sessionID : {
         type : Number
+    },
+    score: {
+        type: Number
     }
 });
 
