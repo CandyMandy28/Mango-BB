@@ -3,6 +3,7 @@ import { Grid, Card, Button } from "semantic-ui-react";
 import axios from 'axios';
 
 import AddCourseModal from "./AddCourseModal";
+import TeacherQuestion from "./TeacherQuestion";
 import { faDice } from "@fortawesome/free-solid-svg-icons";
 
 export default class StudentCourses extends React.Component {
@@ -42,8 +43,11 @@ export default class StudentCourses extends React.Component {
         this.refs.attnchild.handleOpen();
     }
 
-    openQuestionModal() {
+    openTeacherQuestion(className) {
+        
+        //localStorage.setItem("className", className);
         this.refs.questionchild.handleOpen();
+
     }
 
     openAddCourseModal() {
@@ -60,6 +64,7 @@ export default class StudentCourses extends React.Component {
         return (
             <div className={"collectionCont teacherCourses"}>
                 <AddCourseModal ref="addcoursechild"></AddCourseModal>
+                <TeacherQuestion ref="questionchild"></TeacherQuestion>
                 <Grid columns={3}>
                     <Grid.Row>
                         <Grid.Column> 
@@ -81,7 +86,7 @@ export default class StudentCourses extends React.Component {
                                                 Attendance
                             </Button>
                                             <Button basic color="red"
-                                            // onClick={() => this.openQuestionModal()}
+                                                onClick={() => this.openTeacherQuestion(class_info.className)}
                                             >
                                                 Questions
                             </Button>
