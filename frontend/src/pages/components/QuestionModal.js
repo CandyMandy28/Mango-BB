@@ -100,12 +100,12 @@ export default class QuestionModal extends React.Component {
 
     handleChange = (e, { value }) => {
         this.setState({ value });
-        this.setState({ answered: true });
+    }
 
-        // update answer
+    submitAnswer() {
         let body = {
             questionID: this.state.questions._id,
-            answer: value,
+            answer: this.state.value,
             netID: localStorage.getItem('netid'),
             sessionID: this.state.sessionID
         }
@@ -116,24 +116,24 @@ export default class QuestionModal extends React.Component {
             this.openLivePolling();
         });
 
-    }
-
-    submitAnswer() {
-
+        this.setState({ answered: true });
+        this.openLivePolling();
     }
 
     openLivePolling() {
         if (this.state.answered) {
-            this.refs.livepollingchild.fetchAnswers(this.state.questions._id, this.state.questions.correctAnswer); 
+            let qid = this.state.questions._id;
+            let correct = this.state.questions.correctAnswer;
+            this.refs.livepollingchild.fetchAnswers(qid, correct); 
             console.log(this.state.questions._id);
-            this.livePoll = setInterval(() => this.refs.livepollingchild.fetchAnswers(this.state.questions._id, this.state.questions.correctAnswer), 1000);
+            this.livePoll = setInterval(() => this.refs.livepollingchild.fetchAnswers(qid, correct), 1000);
         }
     }
 
     resetQuestion() {
         clearInterval(this.timer);
         clearInterval(this.livePoll);
-        this.setState({ timeValue: 30, timePercent: 100 });
+        this.setState({ timeValue: 30, timePercent: 100, value: "" });
         this.timer = 0;
     }
 
