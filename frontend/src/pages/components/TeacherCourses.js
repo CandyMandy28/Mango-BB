@@ -13,12 +13,15 @@ export default class StudentCourses extends React.Component {
         this.state = {
             classes: [],
             crn: 0,
-            class: ""
-        }
+            class: "",
+            sessionID: 0,
+            isSessionOpen: 0
+        }  
     }
 
     componentDidMount() {
         this.fetchClasses();
+        
     }
 
     fetchClasses() {
@@ -26,6 +29,58 @@ export default class StudentCourses extends React.Component {
         axios.get(url).then((res) => {
             this.setState({ classes: res.data.data });
         });
+    }
+
+    handleOpenSession = (crn) => {
+        let body = {
+            crn: crn,
+     
+        }
+        this.fetchSessions(crn);
+        let url = "http://localhost:4000/api/sessions";
+        axios.post(url, body).then(res => {
+            
+            console.log(crn);
+            this.setState({ show_success: true });
+            setTimeout(
+                function () {
+                    this.setState({ show_success: false });
+                }
+                    .bind(this),
+                3000
+            );
+        })
+        this.state.isSessionOpen = 1;
+    }
+
+
+    fetchSessions(crn) {
+        let url = `http://localhost:4000/api/sessions/class/live/${crn}`;
+        axios.get(url).then((res) => {
+            this.setState({ sessionID: res.data.data[0].sessionID });
+            console.log("hi", this.state.sessionID)
+        });
+    }
+
+    handleCloseSession = (sessionID) => {
+        let body = {
+            sessionID: sessionID
+        }
+        
+        let url = `http://localhost:4000/api/sessions/${sessionID}`;
+        axios.put(url, body).then(res => {
+            console.log(sessionID);
+            
+            this.setState({ show_success: true });
+            setTimeout(
+                function () {
+                    this.setState({ show_success: false });
+                }
+                    .bind(this),
+                3000
+            );
+        })
+        this.state.isSessionOpen = 0;
     }
 
     handleCountAttendance = (crn, attendancePresent, attendanceTotal) => {
@@ -84,11 +139,22 @@ export default class StudentCourses extends React.Component {
                                             <Button basic color="green"
                                                 onClick={() => this.openPage(class_info.className, class_info.crn)}>
                                                 Attendance
-                            </Button>
+                                            </Button>
                                             <Button basic color="red"
                                                 onClick={() => this.openTeacherQuestion(class_info.className)}>
                                                 Questions
-                            </Button>
+                                        </Button>
+                                            {this.state.isSessionOpen == 0
+                                                ? <Button basic color="blue"
+                                                    onClick={() => this.handleOpenSession(class_info.crn)}>
+                                                    Start Session
+                                                  </Button>
+                                                : <Button basic color="blue"
+                                                    onClick={() => this.handleCloseSession(this.state.sessionID)}>
+                                                     Close Session
+                                                    </Button>
+                                            }
+
                                         </div>
                                     </Card.Content>
                                 </Card>
