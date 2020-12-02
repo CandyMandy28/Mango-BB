@@ -4,6 +4,7 @@ import axios from 'axios';
 import Sidebar from "./Sidebar";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 import LivePolling from "./LivePolling";
+import RankingforTeacher from "./RankingforTeacher";
 
 export default class TeacherQuestion extends React.Component {
 
@@ -102,8 +103,15 @@ export default class TeacherQuestion extends React.Component {
   openLivePolling() {
     if (this.state.isPollingVisible) {
       this.refs.livepollingchild.fetchAnswers(this.state.questionObject._id, this.state.questionObject.correctAnswer);
+      this.refs.RankingforTeacherchildren.fetchAnswers(this.state.sessionID);
       console.log(this.state.questionObject._id);
-      this.livePoll = setInterval(() => this.refs.livepollingchild.fetchAnswers(this.state.questionObject._id, this.state.questionObject.correctAnswer), 1000);
+      
+      this.livePoll = setInterval(() => {
+        this.refs.livepollingchild.fetchAnswers(this.state.questionObject._id,this.state.questionObject.correctAnswer);
+        this.refs.RankingforTeacherchildren.fetchAnswers(this.state.sessionID);
+        
+      }, 1000);
+    
     }
   }
 
@@ -116,7 +124,19 @@ export default class TeacherQuestion extends React.Component {
         <Modal.Content className={"modalCont questionModal"}>
 
           {this.state.isPollingVisible
-            ? <LivePolling ref="livepollingchild"> </LivePolling>
+
+            ? <Grid columns={2}>
+              <Grid.Row>
+                <Grid.Column>
+                  <LivePolling ref="livepollingchild"> </LivePolling>
+                </Grid.Column>
+
+                <Grid.Column width={4}>
+                  <RankingforTeacher ref="RankingforTeacherchildren"></RankingforTeacher>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+
             : <Grid columns={2}>
               <Grid.Row>
                 <Grid.Column width={12}>
