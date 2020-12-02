@@ -127,7 +127,7 @@ export default class TeacherQuestion extends React.Component {
 
             ? <Grid columns={2}>
               <Grid.Row>
-                <Grid.Column>
+                <Grid.Column width={12}>
                   <LivePolling ref="livepollingchild"> </LivePolling>
                 </Grid.Column>
 
@@ -202,17 +202,22 @@ export default class TeacherQuestion extends React.Component {
             {this.state.viewAll
               ? ""
               : <Grid.Row>
-                <Table.Body>
-                  {this.state.allQuestions.map(q => (
-                    <Table.Row>
-                      <Table.Cell>{q.question}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
+                  <p className={"questionP"}>All Questions:</p>
+                  <Table>
+                    <Table.Body>
+                      {this.state.allQuestions.map(q => (
+                        <Table.Row>
+                          <Table.Cell>{q.question}</Table.Cell>
+                          <Table.Cell>{q.correctAnswer}</Table.Cell>
+                        </Table.Row>
+                      ))}
+                    </Table.Body>
+                  </Table>
               </Grid.Row>
             }
-
-            <Modal.Actions>
+          </Grid>
+        </Modal.Content>
+        <Modal.Actions>
               <Button type='submit' color='blue' disabled={this.state.isShowing ? true : false} onClick={() => this.handleAddQuestion()}>
                 Submit
                 </Button>
@@ -226,9 +231,6 @@ export default class TeacherQuestion extends React.Component {
               }
 
             </Modal.Actions>
-          </Grid>
-        </Modal.Content>
-
       </Modal >
     );
   }

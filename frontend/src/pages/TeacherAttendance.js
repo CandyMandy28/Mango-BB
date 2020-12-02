@@ -26,6 +26,13 @@ export default class TeacherAttendance extends React.Component {
     });
   }
 
+  changeTime (timeString) {
+    let date_str = new Date(timeString);
+    let hour = date_str.toString().substring(16,18) - 6;
+    let min = date_str.toString().substring(19,21);
+    return date_str.toString().substring(0,16) + " " + hour + ":" + min;
+  }
+
   render() {
     return (
       <div className={"pageCont"}>
@@ -42,7 +49,7 @@ export default class TeacherAttendance extends React.Component {
                 <Table.Row>
                   <Table.HeaderCell>Names</Table.HeaderCell>
                   {this.state.sessions.map((session) => (
-                    <Table.HeaderCell>{session.substring(0,10)}</Table.HeaderCell>
+                    <Table.HeaderCell>{this.changeTime(session)}</Table.HeaderCell>
                   ))}
                 </Table.Row>
               </Table.Header>
