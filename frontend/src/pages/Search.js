@@ -92,6 +92,7 @@ export default class Search extends React.Component {
                     {this.state.classes.map((class_info) => (
                       <Table.Row key={class_info.crn}>
                           <Table.Cell>{class_info.className}</Table.Cell>
+                          <Table.Cell><Icon name='users'/> {class_info.totalStudents}</Table.Cell>
                           <Table.Cell>{class_info.teacherID}</Table.Cell>
                           <Table.Cell collapsing><Button primary onClick={() => this.handleAddCourse(class_info.crn)}> <Icon name='book' /> Add Course </Button></Table.Cell>
                       </Table.Row>

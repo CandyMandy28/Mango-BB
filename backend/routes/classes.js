@@ -73,7 +73,7 @@ module.exports = function (router, db) {
     
     router.route("/classes/teacher/:teacherID")
         .get(async function (req, res) {
-            let sql_query = `SELECT teacherID, Classes.crn, className, COUNT(netID) AS totalStudents FROM Classes NATURAL JOIN Enrollments WHERE teacherID ='${req.params.teacherID}'`;
+            let sql_query = `SELECT teacherID, Classes.crn, className, COUNT(netID) AS totalStudents FROM Classes LEFT JOIN Enrollments ON Enrollments.crn = Classes.crn WHERE teacherID ='${req.params.teacherID}'`;
             db.query(sql_query, (err, result) => {
                 if (err) throw err;
                 res.json({ data: result });
@@ -83,7 +83,11 @@ module.exports = function (router, db) {
     router.route("/classes/search/:query/:netID")
         .get(async function (req, res) {
             console.log(req.params.query)
-            let sql_query = `SELECT * FROM Classes WHERE className like '%${req.params.query}%' and crn NOT IN (SELECT crn FROM Enrollments WHERE netID = '${req.params.netID}')`;
+            let sql_query =     `SELECT *, COUNT(netID) AS totalStudents 
+                                FROM Classes NATURAL JOIN Enrollments 
+                                WHERE className like '%${req.params.query}%' and 
+                                crn NOT IN (SELECT crn FROM Enrollments WHERE netID = '${req.params.netID}') 
+                                GROUP BY Enrollments.crn`;
             db.query(sql_query, (err, result) => {
                 if (err) throw err;
                 res.json({ data: result });

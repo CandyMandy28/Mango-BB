@@ -27,7 +27,9 @@ export default class StudentCourses extends React.Component {
     fetchClasses() {
         let url = "http://localhost:4000/api/classes/teacher/" + localStorage.getItem('netid');
         axios.get(url).then((res) => {
-            this.setState({ classes: res.data.data });
+            if (res.data.data[0].className != null) {
+                this.setState({ classes: res.data.data });
+            }
         });
     }
 
