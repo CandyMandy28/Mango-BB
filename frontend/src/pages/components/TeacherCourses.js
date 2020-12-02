@@ -25,7 +25,7 @@ export default class StudentCourses extends React.Component {
     }
 
     fetchClasses() {
-        let url = "http://localhost:4000/api/classes/teachers/" + localStorage.getItem('netid');
+        let url = "http://localhost:4000/api/classes/teacher/" + localStorage.getItem('netid');
         axios.get(url).then((res) => {
             this.setState({ classes: res.data.data });
         });
@@ -135,6 +135,9 @@ export default class StudentCourses extends React.Component {
                                     <Card.Content>
                                         <Card.Header>{class_info.className}</Card.Header>
                                         <Card.Meta>{class_info.teacherID}</Card.Meta>
+                                        <Card.Description>
+                                            <p>Student Number: <strong>{class_info.totalStudents}</strong></p>
+                                        </Card.Description>
                                     </Card.Content>
                                     <Card.Content extra>
                                         <div className="ui two buttons">

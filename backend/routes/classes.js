@@ -73,7 +73,7 @@ module.exports = function (router, db) {
     
     router.route("/classes/teacher/:teacherID")
         .get(async function (req, res) {
-            let sql_query = `SELECT * FROM Classes WHERE teacherID = '${req.params.teacherID}'`;
+            let sql_query = `SELECT teacherID, Classes.crn, className, COUNT(netID) AS totalStudents FROM Classes NATURAL JOIN Enrollments WHERE teacherID ='${req.params.teacherID}'`;
             db.query(sql_query, (err, result) => {
                 if (err) throw err;
                 res.json({ data: result });
