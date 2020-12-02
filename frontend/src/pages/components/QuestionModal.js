@@ -49,15 +49,15 @@ export default class QuestionModal extends React.Component {
             let url1 = "http://localhost:4000/api/responses/question/" + res.data.data[0]._id + "/" + localStorage.getItem('netid');
 
             axios.get(url1).then((res1) => {
-                console.log("questions",res.data.data[0]);
-                console.log("response",res1.data.data);
+                this.setState({ questions: res.data.data[0] });
+                localStorage.setItem('questionID', this.state.questions._id);
+
                 if (res1.data.data.length == 0) {
-                    console.log("123456789");
                     this.setState({ questions: res.data.data[0] });
                     this.startTimer();
                 } else {
-                    console.log("098765r4e3w2");
-                    this.setState({answered: true});
+                    this.setState({ answered: true });
+                    this.openLivePolling();
                 }
             });
         });
@@ -99,32 +99,37 @@ export default class QuestionModal extends React.Component {
         this.setState({ value });
         this.setState({ answered: true });
 
-        console.log(value);
-
         // update answer
         let body = {
             questionID: this.state.questions._id,
             answer: value,
-            netID : localStorage.getItem('netid'),
+            netID: localStorage.getItem('netid'),
             sessionID: this.state.sessionID
         }
-
 
         let url = "http://localhost:4000/api/responses";
         axios.post(url, body).then(res => {
             this.resetQuestion();
             this.openLivePolling();
         });
+
+    }
+
+    submitAnswer() {
+
     }
 
     openLivePolling() {
-        // livepollingchild
-        
+        if (this.state.answered) {
+            this.refs.livepollingchild.fetchAnswers(this.state.questions._id); 
+            console.log(this.state.questions._id);
+            setInterval(() => this.refs.livepollingchild.fetchAnswers(this.state.questions._id), 3000);
+        }
     }
 
     resetQuestion() {
         clearInterval(this.timer);
-        this.setState({timeValue: 30, timePercent: 100});
+        this.setState({ timeValue: 30, timePercent: 100 });
         this.timer = 0;
     }
 
@@ -134,14 +139,13 @@ export default class QuestionModal extends React.Component {
                 <Modal.Header as="h1"> {localStorage.getItem("className")}</Modal.Header>
                 <Modal.Content className={"modalCont questionModal"}>
                     <Progress percent={this.state.timePercent} indicating>Time Remaining: {this.state.timeValue} secs</Progress>
-                    <Grid columns={2}>
+                    <Grid columns={1}>
                         <Grid.Row>
-                            <Grid.Column width={12}>
+                            <Grid.Column>
                                 <h3>{this.state.questions.question}</h3>
 
                                 {this.state.answered ?
-
-                                    <LivePolling ref="livepollingchild"> </LivePolling>
+                                    <LivePolling ref="livepollingchild"></LivePolling>
                                     :
                                     <Form>
                                         <Form.Field>
@@ -197,36 +201,12 @@ export default class QuestionModal extends React.Component {
                                                 onChange={this.handleChange}
                                             />
                                         </Form.Field>
-                                    </Form>}
-                            </Grid.Column>
-                            <Grid.Column width={4}>
-                                <Table>
-                                    <Table.Header>
-                                        <Table.Row>
-                                            <Table.HeaderCell>Your Stats</Table.HeaderCell>
-                                        </Table.Row>
-                                    </Table.Header>
-                                    <Table.Body>
-                                        <Table.Row>
-                                            <Table.Cell>Rank: 10</Table.Cell>
-                                        </Table.Row>
-                                        <Table.Row>
-                                            <Table.Cell>Correct: {/* this.state.*/}</Table.Cell>
-                                        </Table.Row>
-                                    </Table.Body>
-                                    <Table.Header>
-                                        <Table.Row>
-                                            <Table.HeaderCell>Top Students</Table.HeaderCell>
-                                        </Table.Row>
-                                    </Table.Header>
-                                    <Table.Body>
-                                        {/* {this.state.classes.map((class_info) => (
-                                            <Table.Row key={class_info.crn}>
-                                                <Table.Cell>{class_info.className}</Table.Cell>
-                                            </Table.Row>
-                                        ))} */}
-                                    </Table.Body>
-                                </Table>
+                                        <Button basic color="green"
+                                            onClick={() => this.submitAnswer()}>
+                                            Submit
+                                                    </Button>
+                                    </Form>
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

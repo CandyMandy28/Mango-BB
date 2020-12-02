@@ -1,5 +1,7 @@
 import React from "react";
 import { Button, Form, Modal, Checkbox, Icon, Grid, Progress, Table } from "semantic-ui-react";
+import Chart from "chart.js";
+import axios from 'axios';
 
 import "../assets/Style.scss";
 
@@ -8,75 +10,83 @@ export default class LivePolling extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalOpen: false,
-            value: "",
-            timePercent: 0,
-            timeValue: 30
+            answers: [],
+            graphData: {}
         };
-        this.timer = 0;
-        this.startTimer = this.startTimer.bind(this);
-        this.countDown = this.countDown.bind(this);
     }
 
+    chartRef = React.createRef();
     componentDidMount() {
+        // this.fetchAnswers();
 
     }
 
-    // fetchResponses() {
-    //     let url = "http://localhost:4000/api/responses/" + localStorage.getItem('netid');
-    //     axios.get(url).then((res) => {
-    //         this.setState({ responses: res.data.data });
-    //     });
-    // }
-
-    handleOpen = () => {
-        this.setState({ modalOpen: true });
-        this.setState({ options: [] })
-        this.startTimer();
-
-        // this.fetchResponses();
-    }
-
-    handleClose = () => {
-        this.setState({
-            modalOpen: false,
-            movies: []
+    fetchAnswers = (questionID) => {
+        console.log("aprt 2", questionID);
+        let url = "http://localhost:4000/api/responses/live/" + questionID;
+        axios.get(url).then((res) => {
+            this.setState({ answer: res.data.data });
+            console.log(res.data.data);
+            this.renderGraph(res.data.data)
         });
     }
 
+    renderGraph(answer_data) {
+        let answer_labels = ['A', 'B', 'C', 'D', 'E']
+        let answer_ratings = [0, 0, 0, 0, 0]
 
-    startTimer = () => {
-        if (this.timer == 0 && this.state.timeValue > 0) {
-            this.timer = setInterval(() => this.countDown(), 1000);
+        for (let i = 0; i < answer_data.length; i++) {
+            let answer = answer_data[i].answer;
+            let total = answer_data[i].numAnswers;
+            let index = answer_labels.indexOf(answer);
+            answer_ratings[index] = total;
         }
-    }
 
-    countDown = () => {
-        // Remove one second, set state so a re-render happens.
-        let seconds = this.state.timeValue - 1;
-        this.setState({
-            timeValue: seconds,
-            timePercent: Math.round((seconds / 30) * 100)
+        const myChartRef = this.chartRef.current.getContext("2d");
+        new Chart(myChartRef, {
+            type: "bar",
+            data: {
+                //Bring in data
+                labels: answer_labels,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(231, 76, 60, 0.38)",
+                        borderColor: "#e74c3c",
+                        borderWidth: 2,
+                        label: "Rating",
+                        data: answer_ratings,
+                    }
+                ]
+            },
+            options: {
+                //Customize chart options
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0
+                        }
+                    }]
+                },
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                },
+                animation: {
+                    duration: 0
+                }
+            }
         });
-
-        // Check if we're at zero.
-        if (seconds == 0) {
-            clearInterval(this.timer);
-        }
     }
-
-    handleChange = (e, { value }) => this.setState({ value })
 
     render() {
         return (
-            <Grid columns={1}>
-                <Grid.Row>
-                    <Grid.Column width={12}>
-                        <h3>Q: Which direction does the sun rise in?</h3>
-                    </Grid.Column>
-                    {/* <Progress percent={this.state.timePercent} indicating>Time Remaining: {this.state.timeValue} secs</Progress> */}
-                </Grid.Row>
-            </Grid>
+            <div className={"graphContainer"}>
+                <canvas
+                    id="myChart"
+                    ref={this.chartRef}
+                />
+            </div>
+
         );
     }
 }
