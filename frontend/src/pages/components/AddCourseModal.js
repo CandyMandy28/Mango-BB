@@ -69,8 +69,9 @@ export default class AddCourseModal extends React.Component {
     handleOnChangeCRN = (e) => {
         this.setState({
             crn: e.target.value,
-        });
+        }); 
     };
+    
     handleChange = (e, { value }) => this.setState({ value })
 
     handleClose = () => {

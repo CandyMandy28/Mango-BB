@@ -158,7 +158,7 @@ export default class StudentCourses extends React.Component {
 
                                         <div style={{paddingTop: "10px"}}>
                                             <Grid.Row  >
-                                                <Button basic color="pink" className="ui fluid button"
+                                                <Button basic color="pink" className="ui fluid button" disabled={this.state.isSessionOpen == 0 ? true : false}
                                                     onClick={() => this.openTeacherQuestion(class_info.className)}>
                                                     Questions
                                                 </Button>

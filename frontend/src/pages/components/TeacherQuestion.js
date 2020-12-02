@@ -3,6 +3,7 @@ import { Button, Form, Modal, Checkbox, Icon, Grid, Progress, Table, Input } fro
 import axios from 'axios';
 import Sidebar from "./Sidebar";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import LivePolling from "./LivePolling";
 
 export default class TeacherQuestion extends React.Component {
 
@@ -15,8 +16,11 @@ export default class TeacherQuestion extends React.Component {
       correctAnswer: "",
       question: "",
       allQuestions: [],
-      viewAll: true
+      viewAll: true,
+      isPollingVisible: false,
+      questionObject: {}
     }
+    this.livePoll = 0;
   }
 
   componentDidMount() {
@@ -41,8 +45,9 @@ export default class TeacherQuestion extends React.Component {
   handleClose = () => {
     this.setState({
       modalOpen: false,
-      movies: []
+      isPollingVisible: false
     });
+    clearInterval(this.livePoll);
   }
 
   fetchAllQuestions = () => {
@@ -84,14 +89,23 @@ export default class TeacherQuestion extends React.Component {
     let url = "http://localhost:4000/api/questions";
     axios.post(url, body).then(res => {
       this.setState({
+        isPollingVisible: true,
         isShowing: true,
+        questionObject: res.data.data,
         question: "",
         value: ""
       });
+      this.openLivePolling();
     });
-
   }
 
+  openLivePolling() {
+    if (this.state.isPollingVisible) {
+      this.refs.livepollingchild.fetchAnswers(this.state.questionObject._id, this.state.questionObject.correctAnswer);
+      console.log(this.state.questionObject._id);
+      this.livePoll = setInterval(() => this.refs.livepollingchild.fetchAnswers(this.state.questionObject._id, this.state.questionObject.correctAnswer), 1000);
+    }
+  }
 
   render() {
     return (
@@ -100,66 +114,71 @@ export default class TeacherQuestion extends React.Component {
         <Modal.Header as="h1"> {localStorage.getItem("className")}</Modal.Header>
 
         <Modal.Content className={"modalCont questionModal"}>
-          <Grid columns={2}>
-            <Grid.Row>
-              <Grid.Column width={12}>
-                <h4>Question: <Input onChange={this.handleOnChangeQuestion} value={this.state.question} /></h4>
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column width={12}>
-                <Checkbox
-                  radio
-                  label='A'
-                  name='checkboxRadioGroup'
-                  value='A'
-                  checked={this.state.value === 'A'}
-                  onChange={this.handleOnChangeCorrectAnswer}
-                />
-              </Grid.Column>
-              <Grid.Column width={12}>
-                <Checkbox
-                  radio
-                  label='B'
-                  name='checkboxRadioGroup'
-                  value='B'
-                  checked={this.state.value === 'B'}
-                  onChange={this.handleOnChangeCorrectAnswer}
-                />
-              </Grid.Column>
-              <Grid.Column width={12}>
-                <Checkbox
-                  radio
-                  label='C'
-                  name='checkboxRadioGroup'
-                  value='C'
-                  checked={this.state.value === 'C'}
-                  onChange={this.handleOnChangeCorrectAnswer}
-                />
-              </Grid.Column>
-              <Grid.Column width={12}>
-                <Checkbox
-                  radio
-                  label='D'
-                  name='checkboxRadioGroup'
-                  value='D'
-                  checked={this.state.value === 'D'}
-                  onChange={this.handleOnChangeCorrectAnswer}
-                />
-              </Grid.Column>
-              <Grid.Column width={12}>
-                <Checkbox
-                  radio
-                  label='E'
-                  name='checkboxRadioGroup'
-                  value='E'
-                  checked={this.state.value === 'E'}
-                  onChange={this.handleOnChangeCorrectAnswer}
-                />
-              </Grid.Column>
-              <Grid.Column></Grid.Column>
-            </Grid.Row>
 
+          {this.state.isPollingVisible
+            ? <LivePolling ref="livepollingchild"> </LivePolling>
+            : <Grid columns={2}>
+              <Grid.Row>
+                <Grid.Column width={12}>
+                  <h4>Question: <Input onChange={this.handleOnChangeQuestion} value={this.state.question} /></h4>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={12}>
+                  <Checkbox
+                    radio
+                    label='A'
+                    name='checkboxRadioGroup'
+                    value='A'
+                    checked={this.state.value === 'A'}
+                    onChange={this.handleOnChangeCorrectAnswer}
+                  />
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <Checkbox
+                    radio
+                    label='B'
+                    name='checkboxRadioGroup'
+                    value='B'
+                    checked={this.state.value === 'B'}
+                    onChange={this.handleOnChangeCorrectAnswer}
+                  />
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <Checkbox
+                    radio
+                    label='C'
+                    name='checkboxRadioGroup'
+                    value='C'
+                    checked={this.state.value === 'C'}
+                    onChange={this.handleOnChangeCorrectAnswer}
+                  />
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <Checkbox
+                    radio
+                    label='D'
+                    name='checkboxRadioGroup'
+                    value='D'
+                    checked={this.state.value === 'D'}
+                    onChange={this.handleOnChangeCorrectAnswer}
+                  />
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <Checkbox
+                    radio
+                    label='E'
+                    name='checkboxRadioGroup'
+                    value='E'
+                    checked={this.state.value === 'E'}
+                    onChange={this.handleOnChangeCorrectAnswer}
+                  />
+                </Grid.Column>
+                <Grid.Column></Grid.Column>
+              </Grid.Row>
+            </Grid>
+          }
+          <Grid columns={2}>
             {this.state.viewAll
               ? ""
               : <Grid.Row>
