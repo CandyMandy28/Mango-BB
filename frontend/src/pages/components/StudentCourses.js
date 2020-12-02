@@ -10,8 +10,10 @@ export default class StudentCourses extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLive: [],
             classes: []
         }
+        // this.isLive = [];
     }
 
     componentDidMount() {
@@ -22,6 +24,27 @@ export default class StudentCourses extends React.Component {
         let url = "http://localhost:4000/api/enrollments/" + localStorage.getItem('netid');
         axios.get(url).then((res) => {
             this.setState({ classes: res.data.data });
+
+            for (let i = 0; i < this.state.classes.length; i++) {
+                let class_info = this.state.classes[i];
+                let url1 = "http://localhost:4000/api/sessions/class/" + class_info.crn;
+                axios.get(url1).then((res1) => {
+                    console.log(i, res1.data.data.endTime == null);
+                    console.log(i, res1.data.data);
+                    if (res1.data.data.length > 0) {
+                        let url2 = "http://localhost:4000/api/questions/session/" + res1.data.data[0].sessionID;
+                        axios.get(url2).then((res2) => {
+                            if (res2.data.data.length > 0) {
+                                this.setState({ isLive: this.state.isLive.concat(true) });
+                            } else {
+                                this.setState({ isLive: this.state.isLive.concat(false) });
+                            }
+                        });
+                    } else {
+                        this.setState({ isLive: this.state.isLive.concat(false) });
+                    }
+                });
+            }
         });
     }
 
@@ -42,7 +65,7 @@ export default class StudentCourses extends React.Component {
                 <QuestionModal ref="questionchild"></QuestionModal>
                 <Grid columns={3}>
                     <Grid.Row>
-                        {this.state.classes.map((class_info) => (
+                        {this.state.classes.map((class_info, index) => (
                             <Grid.Column key={class_info.crn}>
                                 <Card key={class_info.crn}>
                                     <Card.Content>
@@ -68,12 +91,12 @@ export default class StudentCourses extends React.Component {
                                         <div className="ui two buttons">
                                             <Button basic color="green"
                                                 onClick={() => this.openAttendanceModal(class_info.crn)}>
-                                                Attendance
-                            </Button>
-                                            <Button basic color="red"
-                                                onClick={() => this.openQuestionModal(class_info.crn, class_info.className)}>
-                                                Questions
-                            </Button>
+                                                Attendance</Button>
+                                            {this.state.isLive[index] ?
+                                                <Button basic color="red"
+                                                    onClick={() => this.openQuestionModal(class_info.crn, class_info.className)}>
+                                                    Questions</Button>
+                                                : ""}
                                         </div>
                                     </Card.Content>
                                 </Card>

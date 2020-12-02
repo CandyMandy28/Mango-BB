@@ -49,7 +49,7 @@ module.exports = function (router, db) {
         .get(async function (req, res) {
             let sql_query = 
                 `SELECT * FROM Sessions
-                WHERE Sessions.crn = '${req.params.crn}'`;
+                WHERE Sessions.crn = '${req.params.crn}' ORDER BY sessionID DESC`;
             db.query(sql_query, (err, result) => {
                 if (err) throw err;
                 res.json({ data: result });

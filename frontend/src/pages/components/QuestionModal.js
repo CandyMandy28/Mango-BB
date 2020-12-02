@@ -49,6 +49,12 @@ export default class QuestionModal extends React.Component {
     fetchQuestion() {
         let url = "http://localhost:4000/api/questions/session/" + this.state.sessionID;
         axios.get(url).then((res) => {
+            // console.log("fetchQuestion: ", res.data.data[0], localStorage.getItem('netid'));
+
+            // if (! res.data.data) {
+                // if question doesn't exist
+            // }
+
             let url1 = "http://localhost:4000/api/responses/question/" + res.data.data[0]._id + "/" + localStorage.getItem('netid');
 
             axios.get(url1).then((res1) => {
