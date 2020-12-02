@@ -16,7 +16,8 @@ export default class QuestionModal extends React.Component {
             timePercent: 0,
             timeValue: 30,
             answered: false,
-            sessionID: 0
+            sessionID: 0,
+            questions: []
         };
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
@@ -30,10 +31,7 @@ export default class QuestionModal extends React.Component {
     handleOpen = () => {
         this.setState({ modalOpen: true });
         this.setState({ options: [] });
-
-        this.isAnswered();
-        this.startTimer();
-
+        this.resetQuestion();
         this.fetchSessions();
     }
 
@@ -41,7 +39,27 @@ export default class QuestionModal extends React.Component {
         let url = "http://localhost:4000/api/sessions/class/live/" + localStorage.getItem("crn");
         axios.get(url).then((res) => {
             this.setState({ sessionID: res.data.data[0].sessionID });
-            console.log("hi", this.state.sessionID)
+            this.fetchQuestion();
+        });
+    }
+
+    fetchQuestion() {
+        let url = "http://localhost:4000/api/questions/session/" + this.state.sessionID;
+        axios.get(url).then((res) => {
+            let url1 = "http://localhost:4000/api/responses/question/" + res.data.data[0]._id + "/" + localStorage.getItem('netid');
+
+            axios.get(url1).then((res1) => {
+                console.log("questions",res.data.data[0]);
+                console.log("response",res1.data.data);
+                if (res1.data.data.length == 0) {
+                    console.log("123456789");
+                    this.setState({ questions: res.data.data[0] });
+                    this.startTimer();
+                } else {
+                    console.log("098765r4e3w2");
+                    this.setState({answered: true});
+                }
+            });
         });
     }
 
@@ -52,10 +70,6 @@ export default class QuestionModal extends React.Component {
         });
     }
 
-    isAnswered() {
-        
-    }
-
     startTimer = () => {
         if (!this.state.answered && this.timer == 0 && this.state.timeValue > 0) {
             this.timer = setInterval(() => this.countDown(), 1000);
@@ -64,12 +78,8 @@ export default class QuestionModal extends React.Component {
 
     countDown = () => {
         // get time from question
-        // let url = "http://localhost:4000/api/questions/session/" + this.state.sessionID;
-        // axios.get(url).then((res) => {
-        //     this.setState({ question: res.data.data });
-        // });
-
-        // this.state.timeValue = this.question this.state.question.timer;
+        // console.log(this.state.questions);
+        // this.setState({timeValue: this.state.questions.timer});
 
         // Remove one second, set state so a re-render happens.
 
@@ -89,14 +99,33 @@ export default class QuestionModal extends React.Component {
         this.setState({ value });
         this.setState({ answered: true });
 
-        // update answer
+        console.log(value);
 
-        this.openLivePolling();
+        // update answer
+        let body = {
+            questionID: this.state.questions._id,
+            answer: value,
+            netID : localStorage.getItem('netid'),
+            sessionID: this.state.sessionID
+        }
+
+
+        let url = "http://localhost:4000/api/responses";
+        axios.post(url, body).then(res => {
+            this.resetQuestion();
+            this.openLivePolling();
+        });
     }
 
     openLivePolling() {
         // livepollingchild
         
+    }
+
+    resetQuestion() {
+        clearInterval(this.timer);
+        this.setState({timeValue: 30, timePercent: 100});
+        this.timer = 0;
     }
 
     render() {
@@ -108,7 +137,7 @@ export default class QuestionModal extends React.Component {
                     <Grid columns={2}>
                         <Grid.Row>
                             <Grid.Column width={12}>
-                                <h3>{this.state.question}</h3>
+                                <h3>{this.state.questions.question}</h3>
 
                                 {this.state.answered ?
 

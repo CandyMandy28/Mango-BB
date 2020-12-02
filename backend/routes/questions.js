@@ -57,7 +57,7 @@ module.exports = function (router, db) {
     router.route('/questions/session/:id')
         .get(async function (req, res) {
             try {
-                const question = await questionModel.find({sessionID: req.params.id});
+                const question = await questionModel.find({sessionID: req.params.id}).sort( {timeAsked: -1});
                 res.send({message: "OK", data: question});
             } catch (err) {
                 res.status(404).send({message: "Error", data: err})
