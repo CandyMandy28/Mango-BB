@@ -106,6 +106,16 @@ module.exports = function (router, db) {
             }
         });
 
+    router.route('/responses/question/:id/:netid')
+        .get(async function (req, res) {
+            try {
+                const response = await responseModel.find({questionID: ObjectId(req.params.id), netID: req.params.netid});
+                res.send({message: "OK", data: response});
+            } catch (err) {
+                res.status(404).send({message: "Error", data: err})
+            }
+        })
+
     router.route('/responses/avg/:id')
         .get(async function (req, res) {
 
