@@ -11,7 +11,9 @@ export default class AddCourseModal extends React.Component {
         this.state = {
             modalOpen: false,
             crn: 0,
-            className: ""
+            className: "",
+            courseNameFilled: false,
+            crnFilled: false
         };
     }
 
@@ -63,12 +65,14 @@ export default class AddCourseModal extends React.Component {
     handleOnChangeCourseName = (e) => {
         this.setState({
             className: e.target.value,
+            courseNameFilled: true
         });
     };
 
     handleOnChangeCRN = (e) => {
         this.setState({
             crn: e.target.value,
+            crnFilled: true
         }); 
     };
     
@@ -99,7 +103,7 @@ export default class AddCourseModal extends React.Component {
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button type='submit' color='blue' onClick={() => this.handleAddCourse()}>
+                    <Button type='submit' color='blue' disabled={this.state.crnFilled && this.state.courseNameFilled ? false : true } onClick={() => this.handleAddCourse()}>
                         Confirm
                     </Button>
                 </Modal.Actions>
