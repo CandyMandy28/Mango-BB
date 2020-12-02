@@ -20,6 +20,7 @@ export default class QuestionModal extends React.Component {
             questions: []
         };
         this.timer = 0;
+        this.livePoll = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
     }
@@ -31,6 +32,7 @@ export default class QuestionModal extends React.Component {
     handleOpen = () => {
         this.setState({ modalOpen: true });
         this.setState({ options: [] });
+        this.setState({ answered: false });
         this.resetQuestion();
         this.fetchSessions();
     }
@@ -64,6 +66,7 @@ export default class QuestionModal extends React.Component {
     }
 
     handleClose = () => {
+        this.resetQuestion();
         this.setState({
             modalOpen: false,
             movies: []
@@ -121,14 +124,15 @@ export default class QuestionModal extends React.Component {
 
     openLivePolling() {
         if (this.state.answered) {
-            this.refs.livepollingchild.fetchAnswers(this.state.questions._id); 
+            this.refs.livepollingchild.fetchAnswers(this.state.questions._id, this.state.questions.correctAnswer); 
             console.log(this.state.questions._id);
-            setInterval(() => this.refs.livepollingchild.fetchAnswers(this.state.questions._id), 3000);
+            this.livePoll = setInterval(() => this.refs.livepollingchild.fetchAnswers(this.state.questions._id, this.state.questions.correctAnswer), 1000);
         }
     }
 
     resetQuestion() {
         clearInterval(this.timer);
+        clearInterval(this.livePoll);
         this.setState({ timeValue: 30, timePercent: 100 });
         this.timer = 0;
     }
