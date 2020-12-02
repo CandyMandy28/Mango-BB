@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import "../assets/Style.scss";
 import LivePolling from "./LivePolling";
+import Ranking from "./Ranking";
 
 export default class QuestionModal extends React.Component {
 
@@ -21,6 +22,7 @@ export default class QuestionModal extends React.Component {
         };
         this.timer = 0;
         this.livePoll = 0;
+        this.ranks = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
     }
@@ -124,15 +126,23 @@ export default class QuestionModal extends React.Component {
         if (this.state.answered) {
             let qid = this.state.questions._id;
             let correct = this.state.questions.correctAnswer;
-            this.refs.livepollingchild.fetchAnswers(qid, correct); 
+            this.refs.livepollingchild.fetchAnswers(qid, correct);
+            this.refs.rankingchildren.fetchAnswers(this.state.sessionID);
             console.log(this.state.questions._id);
-            this.livePoll = setInterval(() => this.refs.livepollingchild.fetchAnswers(qid, correct), 1000);
+
+            this.livePoll = setInterval(() => {
+                this.refs.livepollingchild.fetchAnswers(qid, correct);
+                
+            }, 1000);
+
+            this.ranks = setInterval(() => {this.refs.rankingchildren.fetchAnswers(this.state.sessionID)}, 5000);
         }
     }
 
     resetQuestion() {
         clearInterval(this.timer);
         clearInterval(this.livePoll);
+        clearInterval(this.ranks);
         this.setState({ timeValue: 30, timePercent: 100, value: "" });
         this.timer = 0;
     }
@@ -143,9 +153,9 @@ export default class QuestionModal extends React.Component {
                 <Modal.Header as="h1"> {localStorage.getItem("className")}</Modal.Header>
                 <Modal.Content className={"modalCont questionModal"}>
                     <Progress percent={this.state.timePercent} indicating>Time Remaining: {this.state.timeValue} secs</Progress>
-                    <Grid columns={1}>
+                    <Grid columns={2}>
                         <Grid.Row>
-                            <Grid.Column>
+                            <Grid.Column width={12}>
                                 <h3>{this.state.questions.question}</h3>
 
                                 {this.state.answered ?
@@ -212,18 +222,13 @@ export default class QuestionModal extends React.Component {
                                     </Form>
                                 }
                             </Grid.Column>
+                            <Grid.Column width={4}>
+                                <Ranking ref="rankingchildren"></Ranking>
+                            </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Modal.Content>
-                {/* <Modal.Actions>
-                <Button color='red'>
-                    <Icon name='chevron left' /> Previous
-                </Button>
-                <Button color='green'>
-                    <Icon name='chevron right' /> Next
-                </Button>
-            </Modal.Actions> */}
-            </Modal>
+            </Modal >
         );
     }
 }

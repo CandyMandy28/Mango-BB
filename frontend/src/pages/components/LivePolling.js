@@ -23,11 +23,9 @@ export default class LivePolling extends React.Component {
     }
 
     fetchAnswers = (questionID, correctAnswer) => {
-        console.log("aprt 2", questionID);
         let url = "http://localhost:4000/api/responses/live/" + questionID;
         axios.get(url).then((res) => {
             this.setState({ answer: res.data.data });
-            console.log(res.data.data);
             this.updateData(res.data.data, correctAnswer);
         });
     }
