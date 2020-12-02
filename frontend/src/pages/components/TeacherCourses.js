@@ -16,12 +16,12 @@ export default class StudentCourses extends React.Component {
             class: "",
             sessionID: 0,
             isSessionOpen: 0
-        }  
+        }
     }
 
     componentDidMount() {
         this.fetchClasses();
-        
+
     }
 
     fetchClasses() {
@@ -34,12 +34,12 @@ export default class StudentCourses extends React.Component {
     handleOpenSession = (crn) => {
         let body = {
             crn: crn,
-     
+
         }
         this.fetchSessions(crn);
         let url = "http://localhost:4000/api/sessions";
         axios.post(url, body).then(res => {
-            
+            this.setState({ sessionID: res.data.data.insertId });
             console.log(crn);
             this.setState({ show_success: true });
             setTimeout(
@@ -51,6 +51,7 @@ export default class StudentCourses extends React.Component {
             );
         })
         this.state.isSessionOpen = 1;
+
     }
 
 
@@ -66,11 +67,11 @@ export default class StudentCourses extends React.Component {
         let body = {
             sessionID: sessionID
         }
-        
+
         let url = `http://localhost:4000/api/sessions/${sessionID}`;
         axios.put(url, body).then(res => {
             console.log(sessionID);
-            
+
             this.setState({ show_success: true });
             setTimeout(
                 function () {
@@ -101,7 +102,8 @@ export default class StudentCourses extends React.Component {
     openTeacherQuestion(className) {
 
         //localStorage.setItem("className", className);
-        this.refs.questionchild.handleOpen();
+
+        this.refs.questionchild.handleOpen(this.state.sessionID);
 
     }
 
@@ -140,10 +142,7 @@ export default class StudentCourses extends React.Component {
                                                 onClick={() => this.openPage(class_info.className, class_info.crn)}>
                                                 Attendance
                                             </Button>
-                                            <Button basic color="red"
-                                                onClick={() => this.openTeacherQuestion(class_info.className)}>
-                                                Questions
-                                        </Button>
+
                                             {this.state.isSessionOpen == 0
                                                 ? <Button basic color="blue"
                                                     onClick={() => this.handleOpenSession(class_info.crn)}>
@@ -151,11 +150,23 @@ export default class StudentCourses extends React.Component {
                                                   </Button>
                                                 : <Button basic color="blue"
                                                     onClick={() => this.handleCloseSession(this.state.sessionID)}>
-                                                     Close Session
+                                                    Close Session
                                                     </Button>
                                             }
-
+                                            
                                         </div>
+
+                                        <div style={{paddingTop: "10px"}}>
+                                            <Grid.Row  >
+                                                <Button basic color="pink" className="ui fluid button"
+                                                    onClick={() => this.openTeacherQuestion(class_info.className)}>
+                                                    Questions
+                                                </Button>
+
+                                            </Grid.Row>
+                                        </div>
+                                        
+
                                     </Card.Content>
                                 </Card>
                             </Grid.Column>

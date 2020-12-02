@@ -2,33 +2,40 @@ import React from "react";
 import { Button, Form, Modal, Checkbox, Icon, Grid, Progress, Table, Input } from "semantic-ui-react";
 import axios from 'axios';
 import Sidebar from "./Sidebar";
+import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 
 export default class TeacherQuestion extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      sessions: [],
+      sessionID: 0,
       students: {},
-      isShowing: false
+      isShowing: false,
+      correctAnswer: "",
+      question: "",
+      allQuestions: [],
+      viewAll: true
     }
   }
 
   componentDidMount() {
     this.fetchClass();
+    //this.fetchAllQuestions();
   }
 
   fetchClass() {
     let url = `http://localhost:4000/api/attendance/${localStorage.getItem("crn")}`;
     axios.get(url).then((res) => {
-      this.setState({ sessions: res.data.session, students: res.data.data, isShowing: true });
+      this.setState({ classes: res.data.session, students: res.data.data, isShowing: true });
       console.log(res.data.session);
     });
   }
 
-  handleOpen = () => {
+  handleOpen = (sessionID) => {
     this.setState({ modalOpen: true });
     this.setState({ options: [] })
+    this.setState({ sessionID: sessionID })
   }
 
   handleClose = () => {
@@ -38,33 +45,53 @@ export default class TeacherQuestion extends React.Component {
     });
   }
 
-  handleAddQuestion = () => {
-    // let body = {
-    //     crn: this.state.crn,
-    //     className: this.state.className,
-    //     teacherID: localStorage.getItem("netid")
-    // }
-    // let url = "http://localhost:4000/api/classes";
-    // axios.post(url, body).then(res => {
-    //     this.fetchClass(this.state.query);
-    //     this.fetchClasses();
-    //     this.setState({ show_success: true });
-    //     setTimeout(
-    //         function () {
-    //             this.setState({ show_success: false });
-    //         }
-    //             .bind(this),
-    //         3000
-    //     );
-    // })
-    // this.setState({
-    //     modalOpen: false,
-    //     movies: []
-    // });
-    // window.location.reload();
+  fetchAllQuestions = () => {
+    let url = `http://localhost:4000/api/questions/session/${this.state.sessionID}`;
+    axios.get(url).then((res) => {
+
+      this.setState({ allQuestions: res.data.data });
+      //console.log(this.state.question);
+    });
+    this.setState({ viewAll: false });
   }
 
-  handleChange = (e, { value }) => this.setState({ value })
+
+  handleOnChangeCorrectAnswer = (e, { value }) => {
+    this.setState({
+      correctAnswer: value,
+      value,
+      isShowing: false
+    });
+    console.log(typeof value);
+    console.log(value);
+    //handleChange = (e, { value }) => this.setState({ value })
+  };
+
+  handleOnChangeQuestion = (e) => {
+    this.setState({
+      question: e.target.value,
+    });
+  };
+
+
+  handleAddQuestion = () => {
+    let body = {
+      correctAnswer: this.state.correctAnswer,
+      question: this.state.question,
+      sessionID: this.state.sessionID,
+    }
+
+    let url = "http://localhost:4000/api/questions";
+    axios.post(url, body).then(res => {
+      this.setState({
+        isShowing: true,
+        question: "",
+        value: ""
+      });
+    });
+
+  }
+
 
   render() {
     return (
@@ -76,7 +103,7 @@ export default class TeacherQuestion extends React.Component {
           <Grid columns={2}>
             <Grid.Row>
               <Grid.Column width={12}>
-                <h4>Question: <Input onChange={this.handleOnChangeName} value={this.state.profile} /></h4>
+                <h4>Question: <Input onChange={this.handleOnChangeQuestion} value={this.state.question} /></h4>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -87,7 +114,7 @@ export default class TeacherQuestion extends React.Component {
                   name='checkboxRadioGroup'
                   value='A'
                   checked={this.state.value === 'A'}
-                  onChange={this.handleChange}
+                  onChange={this.handleOnChangeCorrectAnswer}
                 />
               </Grid.Column>
               <Grid.Column width={12}>
@@ -97,7 +124,7 @@ export default class TeacherQuestion extends React.Component {
                   name='checkboxRadioGroup'
                   value='B'
                   checked={this.state.value === 'B'}
-                  onChange={this.handleChange}
+                  onChange={this.handleOnChangeCorrectAnswer}
                 />
               </Grid.Column>
               <Grid.Column width={12}>
@@ -107,7 +134,7 @@ export default class TeacherQuestion extends React.Component {
                   name='checkboxRadioGroup'
                   value='C'
                   checked={this.state.value === 'C'}
-                  onChange={this.handleChange}
+                  onChange={this.handleOnChangeCorrectAnswer}
                 />
               </Grid.Column>
               <Grid.Column width={12}>
@@ -117,7 +144,7 @@ export default class TeacherQuestion extends React.Component {
                   name='checkboxRadioGroup'
                   value='D'
                   checked={this.state.value === 'D'}
-                  onChange={this.handleChange}
+                  onChange={this.handleOnChangeCorrectAnswer}
                 />
               </Grid.Column>
               <Grid.Column width={12}>
@@ -127,20 +154,43 @@ export default class TeacherQuestion extends React.Component {
                   name='checkboxRadioGroup'
                   value='E'
                   checked={this.state.value === 'E'}
-                  onChange={this.handleChange}
+                  onChange={this.handleOnChangeCorrectAnswer}
                 />
               </Grid.Column>
               <Grid.Column></Grid.Column>
             </Grid.Row>
+
+            {this.state.viewAll
+              ? ""
+              : <Grid.Row>
+                <Table.Body>
+                  {this.state.allQuestions.map(q => (
+                    <Table.Row>
+                      <Table.Cell>{q.question}</Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Grid.Row>
+            }
+
             <Modal.Actions>
-              <Button type='submit' color='blue' onClick={() => this.handleAddQuestion()}>
+              <Button type='submit' color='blue' disabled={this.state.isShowing ? true : false} onClick={() => this.handleAddQuestion()}>
                 Submit
-                    </Button>
+                </Button>
+              {this.state.viewAll
+                ? < Button type='submit' color='blue' onClick={() => this.fetchAllQuestions()}>
+                  View All Questions
+                  </Button>
+                : <Button type='submit' color='blue' onClick={() => this.setState({ viewAll: true })}>
+                  Hide All Questions
+                </Button>
+              }
+
             </Modal.Actions>
           </Grid>
         </Modal.Content>
 
-      </Modal>
+      </Modal >
     );
   }
 }
