@@ -22,7 +22,6 @@ export default class QuestionModal extends React.Component {
         };
         this.timer = 0;
         this.livePoll = 0;
-        this.ranks = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
     }
@@ -132,17 +131,15 @@ export default class QuestionModal extends React.Component {
 
             this.livePoll = setInterval(() => {
                 this.refs.livepollingchild.fetchAnswers(qid, correct);
+                this.refs.rankingchildren.fetchAnswers(this.state.sessionID);
                 
             }, 1000);
-
-            this.ranks = setInterval(() => {this.refs.rankingchildren.fetchAnswers(this.state.sessionID)}, 5000);
         }
     }
 
     resetQuestion() {
         clearInterval(this.timer);
         clearInterval(this.livePoll);
-        clearInterval(this.ranks);
         this.setState({ timeValue: 30, timePercent: 100, value: "" });
         this.timer = 0;
     }
