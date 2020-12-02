@@ -31,7 +31,7 @@ export default class StudentCourses extends React.Component {
                 axios.get(url1).then((res1) => {
                     console.log(i, res1.data.data.endTime == null);
                     console.log(i, res1.data.data);
-                    if (res1.data.data.length > 0 && res1.data.data.endTime == null) {
+                    if (res1.data.data.length > 0 && res1.data.data[0].endTime == null) {
                         let url2 = "http://localhost:4000/api/questions/session/" + res1.data.data[0].sessionID;
                         axios.get(url2).then((res2) => {
                             if (res2.data.data.length > 0) {
